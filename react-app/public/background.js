@@ -10,28 +10,28 @@
 //     })
 // })
 
-// chrome.runtime.onIntalled.addListener(() => {
-//     chrome.storage.local.get(['lastUsageDate', 'usageCount'], (result) => {
-//         if(!result.lastUsageDate) {
-//             chrome.storage.local.set({lastUsageDate: new Date().toDateString, usageCount: 0});
-//         }
-//     })
-// })
+chrome.runtime.onIntalled.addListener(() => {
+    chrome.storage.local.get(['lastUsageDate', 'usageCount'], (result) => {
+        if(!result.lastUsageDate) {
+            chrome.storage.local.set({lastUsageDate: new Date().toDateString, usageCount: 0});
+        }
+    })
+})
 
-// function trackDailyUsage() {
-//     const today = new Date().toDateString();
+function trackDailyUsage() {
+    const today = new Date().toDateString();
 
-//     chrome.storage.local.get(['lastUsageDate', 'usageCount'], (result)=> {
-//         let lastUsageDate = result.lastUsageDate;
-//         let usageCount = result.usageCount || 0;
+    chrome.storage.local.get(['lastUsageDate', 'usageCount'], (result)=> {
+        let lastUsageDate = result.lastUsageDate;
+        let usageCount = result.usageCount || 0;
 
-//         if (lastUsageDate !== today) {
-//             usageCount++;
-//             chrome.storage.local.set({ lastUsageDate: today, usageCount: usageCount});
-//             console.log(`Extension used for ${usageCount} days`);
+        if (lastUsageDate !== today) {
+            usageCount++;
+            chrome.storage.local.set({ lastUsageDate: today, usageCount: usageCount});
+            console.log(`Extension used for ${usageCount} days`);
 
-//         } else {
-//             console.log("Extension already used today.");
-//         }
-//     })
-// }
+        } else {
+            console.log("Extension already used today.");
+        }
+    })
+}
