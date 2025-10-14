@@ -2,6 +2,8 @@
 // need to store a record of how manny days the extension was used
 // chrome.storage.local
 
+/* global chrome */ // keep this
+
 // document.getElementById('myButton').addEventListener('click', function() {
 //     chrome.storage.local.get('bottonClickCount', function(data) {
 //         let count = data.buttonClickCount || 0;
@@ -10,10 +12,11 @@
 //     })
 // })
 
-chrome.runtime.onIntalled.addListener(() => {
+/*
+chrome.runtime.onInstalled.addListener(() => {
     chrome.storage.local.get(['lastUsageDate', 'usageCount'], (result) => {
         if(!result.lastUsageDate) {
-            chrome.storage.local.set({lastUsageDate: new Date().toDateString, usageCount: 0});
+            chrome.storage.local.set({lastUsageDate: new Date().toDateString(), usageCount: 0});
         }
     })
 })
@@ -35,3 +38,4 @@ function trackDailyUsage() {
         }
     })
 }
+ */
