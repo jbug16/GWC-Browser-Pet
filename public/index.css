@@ -9,11 +9,12 @@
 
 #buttons:hover {
   background-color: #778DA9;
-
+  cursor:pointer;
 }
 
 
 #div {
-  padding: 20px;
+  padding: 30px;
   background-color: #E0E1DD;
+  align-content:center;
 }
