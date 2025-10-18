@@ -1,19 +1,20 @@
-#buttons {
+button {
   background-color: #415A77;
   border-radius: 2px;
   padding: 10px;
   font-family:Verdana, Geneva, Tahoma, sans-serif;
   transition: background-color 0.10s;
+  color:#E0E1DD;
 
 }
 
-#buttons:hover {
+button:hover {
   background-color: #778DA9;
   cursor:pointer;
 }
 
 
-#div {
+div {
   padding: 30px;
   background-color: #E0E1DD;
   align-content:center;
