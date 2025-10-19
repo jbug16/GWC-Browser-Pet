@@ -4,7 +4,7 @@
     "description": "A pet penguin to keep you on task while you study",
     "version": "1.0",
     "action": {
-        "default_popup": "popup/popup.html"
+        "default_popup": "index.html"
     },
     "icons": {
         "16": "images/cat_icon_16.png",
