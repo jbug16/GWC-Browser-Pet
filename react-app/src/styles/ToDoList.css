@@ -1,0 +1,144 @@
+.todo-container {
+    background-color: #E0E1DD;
+    overflow: hidden;
+    width: 100%;
+    min-width: 791px;
+    min-height: 608px;
+    position: relative;
+}
+
+.todo-header-bar {
+    position: absolute;
+    top: 0;
+    left: 0;
+    width: 791px;
+    height: 38px;
+    background-color: #D9D9D9;
+}
+
+.todo-igloo {
+    position: absolute;
+    top: 267px;
+    left: -6px;
+    width: 456px;
+    height: 338px;
+}
+
+.todo-footer-bar {
+    position: absolute;
+    top: 586px;
+    left: 0;
+    width: 791px;
+    height: 30px;
+    background-color: #778da9;
+}
+
+.dot {
+    position: absolute;
+    width: 19px;
+    height: 19px;
+    border-radius: 9.5px;
+}
+
+.line {
+    position: absolute;
+    width: 35px;
+    height: 5px;
+    background-color: #415A77;
+}
+
+.todo-title-bg {
+    position: absolute;
+    top: 80px;
+    left: 402px;
+    width: 326px;
+    height: 74px;
+    background-color: rgba(65, 90, 119, 0.3);
+}
+
+.todo-title {
+    position: absolute;
+    top: 50px;
+    left: 408px;
+    font-family: 'Jersey 25', sans-serif;
+    color: #0D1B2A;
+    font-size: 130px;
+    text-shadow: 0px 4px 4px #778da9;
+    line-height: normal;
+    white-space: nowrap;
+}
+
+.todo-card {
+    position: absolute;
+    top: 165px;
+    left: 390px;
+    width: 342px;
+    height: 237px;
+    background-color: #D9D9D9;
+    border: 3px solid #778DA9;
+    border-radius: 20px;
+}
+
+.todo-card-inner {
+    position: absolute;
+    top: 185px;
+    left: 412.5px;
+    width: 303px;
+    height: 201px;
+    background-color: rgba(176, 185, 190, 0.5);
+    border-radius: 20px;
+}
+
+.todo-list {
+    position: absolute;
+    top: 195px;
+    left: 450px;
+    width: 225px;
+    height: 26px;
+    font-family: 'Jersey 25', sans-serif;
+    color: #0D1B2A;
+    font-size: 25px;
+    list-style: none;
+    margin: 0;
+    padding: 0;
+}
+
+.todo-list li {
+    margin-bottom: 10px;
+}
+
+.btn-back {
+    position: absolute;
+    top: 50px;
+    left: 11px;
+    width: 120px;
+    height: 42px;
+    background-color: rgba(65, 90, 119, 0.3);
+    font-family: 'Jersey 25', sans-serif;
+    font-size: 30px;
+    color: #0D1B2A;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    gap: 5px;
+    padding: 0;
+    border: none;
+}
+
+.btn-add {
+    position: absolute;
+    top: 412px;
+    left: 500px;
+    width: 129px;
+    height: 41px;
+    background-color: rgba(65, 90, 119, 0.3);
+    font-family: 'Jersey 25', sans-serif;
+    font-size: 30px;
+    color: #0D1B2A;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    padding: 0;
+    border: none;
+    box-shadow: 0px 4px 4px #415A77;
+}

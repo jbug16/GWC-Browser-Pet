@@ -1,0 +1,117 @@
+.home-container {
+    background-color: #E0E1DD;
+    overflow: hidden;
+    width: 100%;
+    min-width: 791px;
+    min-height: 608px;
+    position: relative;
+}
+
+.home-header-bar {
+    position: absolute;
+    top: 0;
+    left: 0;
+    width: 791px;
+    height: 38px;
+    background-color: #D9D9D9;
+}
+
+.home-footer-bar {
+    position: absolute;
+    top: 586px;
+    left: 0;
+    width: 791px;
+    height: 30px;
+    background-color: #778da9;
+}
+
+.home-igloo {
+    position: absolute;
+    top: 264px;
+    left: 0;
+    width: 475px;
+    height: 344px;
+}
+
+.home-flag {
+    position: absolute;
+    top: 348px;
+    left: 437px;
+    width: 165.39px;
+    height: 248.65px;
+    transform: rotate(-2.04deg);
+}
+
+.dot {
+    position: absolute;
+    width: 19px;
+    height: 19px;
+    border-radius: 9.5px;
+}
+
+.line {
+    position: absolute;
+    width: 35px;
+    height: 5px;
+    background-color: #415A77;
+}
+
+.title-bg {
+    position: absolute;
+    top: 59px;
+    left: 21px;
+    width: 525px;
+    height: 45px;
+    background-color: rgba(65, 90, 119, 0.3);
+}
+
+.title-text {
+    position: absolute;
+    top: 45px;
+    left: 15px;
+    font-family: 'Jersey 25', sans-serif;
+    color: #0D1B2A;
+    font-size: 66px;
+    text-shadow: 0px 4px 4px #778da9;
+    line-height: normal;
+    white-space: nowrap;
+}
+
+.date-text {
+    position: absolute;
+    top: 108px;
+    left: 26px;
+    font-family: 'Jersey 25', sans-serif;
+    color: #415A77;
+    font-size: 40px;
+    line-height: normal;
+    white-space: nowrap;
+}
+
+.btn {
+    position: absolute;
+    font-family: 'Jersey 25', sans-serif;
+    font-size: 30px;
+    color: #0D1B2A;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    padding: 0;
+    border: none;
+    box-shadow: 0px 4px 4px #778da9;
+    background-color: rgba(65, 90, 119, 0.3);
+}
+
+.btn-timer {
+    top: 369px;
+    left: 39px;
+    width: 236px;
+    height: 52px;
+}
+
+.btn-todo {
+    top: 472px;
+    left: 77px;
+    width: 236px;
+    height: 52px;
+}
