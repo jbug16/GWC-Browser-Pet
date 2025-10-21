@@ -54,7 +54,7 @@ function HomePage() {
             <div className="title-text">Penguin Browser Pet!</div>
             <div className="date-text">Date: {date}</div>
 
-            <button className="btn btn-timer" onClick={() => alert('Going to Timer Page')}>
+            <button className="btn btn-time" onClick={() => alert('Going to Timer Page')}>
                 Timer
             </button>
 

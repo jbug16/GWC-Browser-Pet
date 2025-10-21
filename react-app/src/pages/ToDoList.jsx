@@ -17,31 +17,56 @@ function TodoList() {
     ];
 
     const [showAddPopup, setShowAddPopup] = useState(false);
-    const [seconds, setSeconds] = useState(0);
+    const [seconds, setSeconds] = useState(()=> {
+        const saved = localStorage.getItem("timeLeft");
+        if(saved) {
+            return parseInt(saved, 10);
+        } else {
+            return 0;
+        }
+    });
+
+    const [isRunning, setIsRunning] = useState(false);
     const [tasks, setTasks] = useState([]);
 
-    useEffect(() => {
-        let startTime = localStorage.getItem ("timerStart");
-        if(!startTime) {
-            startTime = Date.now();
-            localStorage.setItem("timerStart", startTime);
-        } else {
-            startTime = parseInt(startTime, 10);
+  useEffect(() => {
+        let interval;
+
+        if (isRunning) {
+            interval = setInterval(() => {
+                setSeconds(prevSeconds => {
+                    let newTime = prevSeconds - 1;
+
+                    if (newTime <= 0) {
+                        clearInterval(interval);
+                        newTime = 0;
+                        setIsRunning(false);
+                        alert("Time’s up!");
+                    }
+
+                    localStorage.setItem("timeLeft", newTime);
+                    return newTime;
+                });
+            }, 1000);
         }
 
-        const interval = setInterval(() => {
-            const now = Date.now();
-            const elapsed = Math.floor ((now - startTime) / 1000);
-            setSeconds(elapsed);
-        }, 1000);
-
-        return () => clearInterval(interval);
-    }, []);
+        return () => {
+            if (interval) {
+               clearInterval(interval); 
+            }
+        };
+    }, [isRunning]);
 
     const formatTime = (secs) => {
-        const h = String(Math.floor(secs / 3600)).padStart(2, "0");
-        const m = String(Math.floor((secs % 3600) / 60)).padStart(2, "0");
-        return `${h}:${m}`;
+        let h = Math.floor(secs / 3600);
+        let m = Math.floor((secs % 3600) / 60);
+        let s = secs % 60;
+
+        if (h < 10) h = "0" + h;
+        if (m < 10) m = "0" + m;
+        if (s < 10) s = "0" + s;
+
+        return `${h}:${m}:${s}`;
     };
 
     const addTask = (taskText) => {
@@ -122,3 +147,4 @@ function TodoList() {
 }
 
 export default TodoList;
+
