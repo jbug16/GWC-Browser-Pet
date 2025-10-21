@@ -1,7 +1,7 @@
 import '../styles/ToDoList.css'; 
 import igloo from '../assets/Igloo.png';
 import PopupPage from './AddPopUp.jsx';
-import { useState } from "react";
+import { useEffect, useState } from "react";
 
 function TodoList() {
     const dots = [
@@ -17,6 +17,31 @@ function TodoList() {
     ];
 
     const [showAddPopup, setShowAddPopup] = useState(false);
+    const [seconds, setSeconds] = useState(0);
+
+    useEffect(() => {
+        let startTime = localStorage.getItem ("timerStart");
+        if(!startTime) {
+            startTime = Date.now();
+            localStorage.setItem("timerStart", startTime);
+        } else {
+            startTime = parseInt(startTime, 10);
+        }
+
+        const interval = setInterval(() => {
+            const now = Date.now();
+            const elapsed = Math.floor ((now - startTime) / 1000);
+            setSeconds(elapsed);
+        }, 1000);
+
+        return () => clearInterval(interval);
+    }, []);
+
+    const formatTime = (secs) => {
+        const h = String(Math.floor(secs / 3600)).padStart(2, "0");
+        const m = String(Math.floor((secs % 3600) / 60)).padStart(2, "0");
+        return `${h}:${m}`;
+    };
 
     return (
         <div className="todo-container">
@@ -52,6 +77,15 @@ function TodoList() {
             </button>
 
             {showAddPopup && <PopupPage onClose={() => setShowAddPopup(false)} />}
+
+            <div className="timer-card">
+                <p className="timer-display">{formatTime(seconds)}</p>
+            </div>
+
+            <button className="btn-timer" onClick={() => alert('Go to set timer page')}>
+                TIMER
+            </button>
+
         </div>
     );
 }
