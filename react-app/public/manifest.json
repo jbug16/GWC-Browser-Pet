@@ -1,25 +1,22 @@
 {
-  "short_name": "React App",
-  "name": "Create React App Sample",
-  "icons": [
-    {
-      "src": "favicon.ico",
-      "sizes": "64x64 32x32 24x24 16x16",
-      "type": "image/x-icon"
+    "manifest_version": 3,
+    "name": "Browser Pet",
+    "description": "A pet penguin to keep you on task while you study",
+    "version": "1.0",
+    "action": {
+        "default_popup": "index.html"
     },
-    {
-      "src": "logo192.png",
-      "type": "image/png",
-      "sizes": "192x192"
+    "icons": {
+        "16": "images/cat_icon_16.png",
+        "32": "images/cat_icon_32.png",
+        "48": "images/cat_icon_48.png",
+        "128": "images/cat_icon_128.png"
     },
-    {
-      "src": "logo512.png",
-      "type": "image/png",
-      "sizes": "512x512"
-    }
-  ],
-  "start_url": ".",
-  "display": "standalone",
-  "theme_color": "#000000",
-  "background_color": "#ffffff"
+    "background": {
+        "service_worker": "background.js",
+        "type": "module"
+    },
+    "permissions": [
+        "storage"
+    ]
 }
