@@ -92,20 +92,54 @@
 .todo-list {
     position: absolute;
     top: 195px;
-    left: 450px;
-    width: 225px;
-    height: 26px;
+    left: 433px;
+    width: 270px;
+    height: 180px;
     font-family: 'Jersey 25', sans-serif;
     color: #0D1B2A;
     font-size: 25px;
     list-style: none;
     margin: 0;
     padding: 0;
+    overflow-y: auto
 }
 
 .todo-list li {
+    display: flex;
+    align-items: center;
+    gap: 10px;
     margin-bottom: 10px;
 }
+
+.todo-checkbox {
+    width: 20px;
+    height: 20px;
+    accent-color: #415A77;
+}
+
+.completed-task {
+    text-decoration: line-through;
+    color:gray;
+}
+
+::-webkit-scrollbar {
+    width:5px;
+}
+
+::-webkit-scrollbar-track {
+    background: #B0B9BE80;
+}
+
+::-webkit-scrollbar-thumb {
+  background: #888;
+  border-radius:20px;
+
+}
+
+::-webkit-scrollbar-thumb:hover {
+  background: #555;
+}
+
 
 .btn-back {
     position: absolute;

@@ -29,10 +29,10 @@
 
 .popup-input {
     position: absolute;
-    top: 244px;
-    left: 244px;
-    width: 303px;
-    height: 73px;
+    top: 242px;
+    left: 245px;
+    width: 285px;
+    height: 79px;
     border: none;
     border-radius: 20px;
     background-color: rgba(176, 185, 190, 0.5); /* #B0B9BE80 */

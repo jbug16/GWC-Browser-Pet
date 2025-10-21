@@ -18,6 +18,7 @@ function TodoList() {
 
     const [showAddPopup, setShowAddPopup] = useState(false);
     const [seconds, setSeconds] = useState(0);
+    const [tasks, setTasks] = useState([]);
 
     useEffect(() => {
         let startTime = localStorage.getItem ("timerStart");
@@ -43,6 +44,19 @@ function TodoList() {
         return `${h}:${m}`;
     };
 
+    const addTask = (taskText) => {
+        const newTask = { id: Date.now(), text: taskText, completed:false};
+        setTasks([...tasks, newTask]);
+    };
+
+    const toggleTask = (id) => {
+        setTasks((prev) =>
+            prev.map((task) =>
+                task.id === id ? { ...task, completed: !task.completed } : task
+            )
+        );
+    };
+
     return (
         <div className="todo-container">
             <div className="todo-header-bar" />
@@ -64,19 +78,26 @@ function TodoList() {
             <div className="todo-card-inner" />
 
             <ul className="todo-list">
-                <li>Sample Task 1</li>
+                {tasks.map((task) => (
+                    <li
+                        key={task.id}
+                        className={task.completed ? "completed-task" : ""}
+                    >
+                        <input 
+                            type="checkbox"
+                            checked={task.completed}
+                            onChange={() =>toggleTask(task.id)}
+                            className="todo-checkbox"
+                        />
+                        {task.text}
+                    </li>
+                ))}
             </ul>
 
             <button className="btn-back" onClick={() => alert('Going to Home Page')}>
                 <span>&lt;</span>
                 <span>BACK</span>
             </button>
-
-            <button className="btn-add" onClick={() => setShowAddPopup(true)}>
-                ADD
-            </button>
-
-            {showAddPopup && <PopupPage onClose={() => setShowAddPopup(false)} />}
 
             <div className="timer-card">
                 <p className="timer-display">{formatTime(seconds)}</p>
@@ -85,7 +106,17 @@ function TodoList() {
             <button className="btn-timer" onClick={() => alert('Go to set timer page')}>
                 TIMER
             </button>
+            
+            <button className="btn-add" onClick={() => setShowAddPopup(true)}>
+                ADD
+            </button>
 
+            {showAddPopup && (
+                <PopupPage 
+                    onClose={() => setShowAddPopup(false)} 
+                    onAddTask={addTask}
+                />
+            )}
         </div>
     );
 }
