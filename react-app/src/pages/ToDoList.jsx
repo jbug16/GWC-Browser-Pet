@@ -2,8 +2,20 @@ import '../styles/ToDoList.css';
 import igloo from '../assets/Igloo.png';
 import PopupPage from './AddPopUp.jsx';
 import { useEffect, useState } from "react";
+import { useNavigate } from "react-router-dom";
 
 function TodoList() {
+    const navigate = useNavigate();
+
+    // Button functions
+    const handleHomeClick = () => {
+        navigate('/');
+    };
+
+    const handleTimerClick = () => {
+        navigate('/timer');
+    };
+
     const dots = [
         { left: 11, color: '#FF0000' },
         { left: 39, color: '#FFE100' },
@@ -119,7 +131,7 @@ function TodoList() {
                 ))}
             </ul>
 
-            <button className="btn-back" onClick={() => alert('Going to Home Page')}>
+            <button className="btn-back" onClick={handleHomeClick}>
                 <span>&lt;</span>
                 <span>BACK</span>
             </button>
@@ -128,7 +140,7 @@ function TodoList() {
                 <p className="timer-display">{formatTime(seconds)}</p>
             </div>
 
-            <button className="btn-timer" onClick={() => alert('Go to set timer page')}>
+            <button className="btn-timer" onClick={handleTimerClick}>
                 TIMER
             </button>
             

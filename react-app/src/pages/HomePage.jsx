@@ -1,9 +1,21 @@
 import React, { useEffect, useState } from "react";
 import igloo from "../assets/Igloo.png";
 import flag from "../assets/Flag.svg";
-import "../styles/HomePage.css"; 
+import "../styles/HomePage.css";
+import {useNavigate} from "react-router-dom";
 
 function HomePage() {
+    const navigate = useNavigate();
+
+    // Button functions
+    const handleToDoClick = () => {
+        navigate('/todo');
+    };
+
+    const handleTimerClick = () => {
+        navigate('/timer');
+    };
+
     const dots = [
         { left: 11, color: '#FF0000' },
         { left: 39, color: '#FFE100' },
@@ -54,11 +66,11 @@ function HomePage() {
             <div className="title-text">Penguin Browser Pet!</div>
             <div className="date-text">Date: {date}</div>
 
-            <button className="btn btn-time" onClick={() => alert('Going to Timer Page')}>
+            <button className="btn btn-time" onClick={handleTimerClick}>
                 Timer
             </button>
 
-            <button className="btn btn-todo" onClick={() => alert('Open to-do page')}>
+            <button className="btn btn-todo" onClick={handleToDoClick}>
                 To-Do List
             </button>
         </div>

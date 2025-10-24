@@ -1,0 +1,22 @@
+.timer-container {
+    background-color: #E0E1DD;
+    overflow: hidden;
+    width: 100%;
+    min-width: 791px;
+    min-height: 600px;
+    position: relative;
+}
+
+button {
+    background-color: #415A77;
+    border-radius: 2px;
+    padding: 10px;
+    font-family: Verdana, Geneva, Tahoma, sans-serif;
+    transition: background-color 0.10s;
+    color: #E0E1DD;
+}
+
+button:hover {
+    background-color: #778DA9;
+    cursor:pointer;
+}
