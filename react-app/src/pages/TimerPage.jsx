@@ -63,20 +63,24 @@ function TimerPage() {
     return (
         <div className="timer-container">
             <label id="enterTime">TIMER</label>
-            <br/> <br/>
             <h1 id="Time">{formatTime(time)}</h1>
-            <br/>
+            <divider/>
+            
+            <buttongroup variant="contained" orientation="horizontal">
             <button id="increaseMin" className="buttons" onClick={handleIncreaseMin}>+10 Minutes</button>
             <button id="increaseSec" className="buttons" onClick={handleIncreaseSec}>+10 Seconds</button>
-            <button id="increaseHr" className="buttons" onClick={handleIncreaseHr}>+1 Hour</button>
-            <br/><br/>
+            <button id="increaseHr"  className="buttons" onClick={handleIncreaseHr}>+1 Hour</button>
+            </buttongroup>
+
+            <divider/>
             <button id="startTimer" className="buttons" onClick={handleStart}>Start</button>
             <button id="pauseReset" className="buttons" onClick={handlePauseReset}>Pause/Reset</button>
             <button id="Stop" className="buttons" onClick={handleStop}>Stop</button>
-            <br/><br/>
+            <divider/>
             <button id="toDo" onClick={handleToDoClick}>ToDo</button>
         </div>
     );
 }
 
 export default TimerPage;
+
