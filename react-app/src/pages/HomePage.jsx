@@ -3,6 +3,7 @@ import igloo from "../assets/Igloo.png";
 import flag from "../assets/Flag.svg";
 import "../styles/HomePage.css";
 import {useNavigate} from "react-router-dom";
+import Pet from "../components/Pet.jsx";
 
 function HomePage() {
     const navigate = useNavigate();
@@ -53,6 +54,10 @@ function HomePage() {
             <img src={flag} alt="Flag" className="home-flag" />
             <img src={igloo} alt="Igloo" className="home-igloo" />
             <div className="home-footer-bar" />
+            <Pet
+                starting_x={100}
+                starting_y={50}
+            />
 
             {dots.map((d, i) => (
                 <div key={i} className="dot" style={{ top: 12, left: d.left, backgroundColor: d.color }} />
