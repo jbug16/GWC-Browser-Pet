@@ -1,11 +1,11 @@
-<svg width="188" height="253" viewBox="0 0 188 253" fill="none" xmlns="http://www.w3.org/2000/svg">
+<svg width="225" height="289" viewBox="0 0 225 289" fill="none" xmlns="http://www.w3.org/2000/svg">
 <g filter="url(#filter0_g_12_50)">
-<path d="M3.00001 249.03L52.0493 3.22804L61.0683 7.41152L43.108 98.6873L13.3807 249.764L3.00001 249.03Z" fill="#D9D9D9"/>
-<path d="M182.672 52.8856L64.7757 7.67365L61.0683 7.41152L43.108 98.6873L171.379 86.127L162.47 64.5768L182.672 52.8856Z" fill="#778DA9"/>
-<path d="M61.0683 7.41152L52.0493 3.22804L3.00001 249.03L13.3807 249.764L43.108 98.6873M61.0683 7.41152L43.108 98.6873M61.0683 7.41152L64.7757 7.67365L182.672 52.8856L162.47 64.5768L171.379 86.127L43.108 98.6873" stroke="#778DA9" stroke-width="3"/>
+<path d="M2.81225 289.581L61.3729 3.136L72.2931 8.0416L50.854 114.41L15.3686 290.468L2.81225 289.581Z" fill="#D9D9D9"/>
+<path d="M219.497 61.4377L76.7776 8.35866L72.2931 8.0416L50.854 114.41L205.943 100.161L195.102 75.0069L219.497 61.4377Z" fill="#778DA9"/>
+<path d="M72.2931 8.0416L61.3729 3.136L2.81225 289.581L15.3686 290.468L50.854 114.41M72.2931 8.0416L50.854 114.41M72.2931 8.0416L76.7776 8.35866L219.497 61.4377L195.102 75.0069L205.943 100.161L50.854 114.41" stroke="#778DA9" stroke-width="3"/>
 </g>
 <defs>
-<filter id="filter0_g_12_50" x="0.195831" y="0.0652161" width="186.946" height="252.289" filterUnits="userSpaceOnUse" color-interpolation-filters="sRGB">
+<filter id="filter0_g_12_50" x="0" y="0" width="224.071" height="293.058" filterUnits="userSpaceOnUse" color-interpolation-filters="sRGB">
 <feFlood flood-opacity="0" result="BackgroundImageFix"/>
 <feBlend mode="normal" in="SourceGraphic" in2="BackgroundImageFix" result="shape"/>
 <feTurbulence type="fractalNoise" baseFrequency="2 2" numOctaves="3" seed="9573" />

@@ -7,6 +7,8 @@ import {useNavigate} from "react-router-dom";
 function HomePage() {
     const navigate = useNavigate();
 
+    const [streak, setStreak] = useState(0);
+
     // Button functions
     const handleToDoClick = () => {
         navigate('/todo');
@@ -16,7 +18,7 @@ function HomePage() {
         navigate('/timer');
     };
 
-    {/* Extra details on top */}
+    // Extra details on top 
     const dots = [
         { left: 11, color: '#FF0000' },
         { left: 39, color: '#FFE100' },
@@ -29,7 +31,7 @@ function HomePage() {
         { top: 24}
     ];
 
-    {/* Update the date presented on home page */}
+    // Update the date presented on home page 
     const [date, setDate] = useState("");
 
     useEffect(() => {
@@ -79,6 +81,14 @@ function HomePage() {
             <button className="btn btn-todo" onClick={handleToDoClick}>
                 To-Do List
             </button>
+
+            {/* Daily Streak */}
+            <div className="streak-text">
+                <span>Daily Streak:</span>
+                <span>{streak} days!</span>
+            </div>
+
+
         </div>
     );
 }
