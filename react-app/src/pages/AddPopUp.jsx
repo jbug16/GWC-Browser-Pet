@@ -4,6 +4,8 @@ import { useState } from "react";
 function AddPopup({ onClose, onAddTask }) {
     const [taskText, setTaskText] = useState("");
 
+
+    // Add Task to the todo list 
     const handleAdd = () => {
         if (taskText.trim() === "") return;
         onAddTask(taskText);
@@ -16,6 +18,7 @@ function AddPopup({ onClose, onAddTask }) {
             <div className="popup-bg" />
             <div className="popup-card" />
 
+            {/* Text inputted gets put into todo list */}
             <input
                 value={taskText}
                 onChange={(e) => setTaskText(e.target.value)}
@@ -23,6 +26,7 @@ function AddPopup({ onClose, onAddTask }) {
                 className="popup-input"
             />
 
+            {/* Popup to add task shows */}
             <button
                 onClick={handleAdd}
                 className="popup-add-btn"
@@ -31,6 +35,7 @@ function AddPopup({ onClose, onAddTask }) {
                 <span>TASK</span>
             </button>
 
+            {/* Close Popup */}
             <button
                 onClick={onClose}
                 className="popup-close-btn"

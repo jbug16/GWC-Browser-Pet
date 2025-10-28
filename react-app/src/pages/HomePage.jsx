@@ -16,6 +16,7 @@ function HomePage() {
         navigate('/timer');
     };
 
+    {/* Extra details on top */}
     const dots = [
         { left: 11, color: '#FF0000' },
         { left: 39, color: '#FFE100' },
@@ -28,6 +29,7 @@ function HomePage() {
         { top: 24}
     ];
 
+    {/* Update the date presented on home page */}
     const [date, setDate] = useState("");
 
     useEffect(() => {
@@ -48,6 +50,7 @@ function HomePage() {
     }, []);
 
     return (
+        // Add Background, igloo, flag, and extra details on home page
         <div className="home-container">
             <div className="home-header-bar" />
             <img src={flag} alt="Flag" className="home-flag" />
@@ -62,14 +65,17 @@ function HomePage() {
                 <div key={i} className="line" style={{ top: l.top, left: 738 }} />
             ))}
 
+            {/* Add title and date */}
             <div className="title-bg" />
             <div className="title-text">Penguin Browser Pet!</div>
             <div className="date-text">Date: {date}</div>
 
+            {/* Buttons to go to timer */}
             <button className="btn btn-time" onClick={handleTimerClick}>
                 Timer
             </button>
 
+            {/* Buttons to go to To-Do list */}
             <button className="btn btn-todo" onClick={handleToDoClick}>
                 To-Do List
             </button>
