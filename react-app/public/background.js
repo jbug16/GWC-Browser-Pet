@@ -37,28 +37,24 @@ async function handleMessage(request) {
         case 'DELETE_TODO':
             return await deleteTodo(data.id);
         case 'TOGGLE_TODO_COMPLETE':
-            return await startTimer(data.id);
+            return await toggleTodoComplete(data.id);
+        case 'CLEAR_COMPLETED_TODOS':
+            return await clearCompletedTodos();
         default:
             throw new Error(`Unkownn action: ${action}`);
     }
 }
 
-// Storage functions
-async function getAllTodos() {
-    console.log("getting To Do List");
-    const result = await chrome.storage.local.get([STORAGE_KEYS.TODOS]);
-    return result[STORAGE_KEYS.TODOS] || [];
-}
-
-async function getTodoById(id) {
-    console.log("finding task");
-    const todos = await getAllTodos();
-    return todos.find(todo => todo.id === id);
-}
 
 function sortTodos(todos) {
     console.log("Sorting tasks by due date");
     return todos.sort((a,b) => {
+        // Completed tasks go to the bottom
+        if (a.completed && !b.completed) return 1;
+        if (!a.completed && b.completed) return -1;
+        if (a.completed && b.completed) return 0;  // Keep completed tasks in order
+        
+        // Incomplete tasks sorted by due date
         if (!a.dueDate && !b.dueDate) return 0;
         if (!a.dueDate) return 1;
         if (!b.dueDate) return -1;
@@ -66,18 +62,33 @@ function sortTodos(todos) {
     });
 }
 
-async function createTodo(title, description = '') {
-    console.log("Creating task");
-    // Get existing todo array
+// Storage functions
+async function getAllTodos() {
+    console.log("Getting todo list");
+    const result = await chrome.storage.local.get([STORAGE_KEYS.TODOS]);
+    return result[STORAGE_KEYS.TODOS] || [];
+}
+
+async function getTodoById(id) {
+    console.log("finding task id:", id);
+    const todos = await getAllTodos();
+    return todos.find(todo => todo.id === id);
+}
+
+async function createTodo(title, description = '', dueDate = null) {
+    console.log("Creating new task");
+    // get existing array
     const todos = await getAllTodos();
 
-    // Create the New todo object
+    // Create a new todo object
     const newTodo = {
         id: Date.now().toString(),
         title,
-        description,
+        description: description || '',
         completed: false,
-        dueDate: dueDate,
+        completedAt: null,
+        dueDate: dueDate || null,
+        timeSpent: 0
     };
     
     // Add newTodo to the array
@@ -91,7 +102,7 @@ async function createTodo(title, description = '') {
 }
 
 async function updateTodo(id, updates) {
-    console.log("Making changes to existing tasks");
+    console.log("Updating task:", id);
     const todos = await getAllTodos();
     const index = todos.findIndex(todo => todo.id === id);
     
@@ -103,13 +114,13 @@ async function updateTodo(id, updates) {
     todos[index] = {
         ...todos[index],
         ...updates,
-        updatedAt: new Date().toISOString()
+        // updatedAt: new Date().toISOString()
     };
 
     // re-sort list if due date is changed
-    if(updates.dueDate !== undefined) {
-        sortTodos(todos);
-    }
+    // if(updates.dueDate !== undefined) {
+    //     sortTodos(todos);
+    // }
     
     await chrome.storage.local.set({ [STORAGE_KEYS.TODOS]: todos });
     return todos[index];
@@ -117,7 +128,7 @@ async function updateTodo(id, updates) {
 
 // task completed, delete from list
 async function deleteTodo(id) {
-    console.log("Removing task from list");
+    console.log("Deleting task:", id);
     const todos = await getAllTodos();
     const filteredTodos = todos.filter(todo => todo.id !== id);
     await chrome.storage.local.set({ [STORAGE_KEYS.TODOS]: filteredTodos });
@@ -125,14 +136,50 @@ async function deleteTodo(id) {
 }
 
 async function toggleTodoComplete(id) {
-    console.log("Marking task complete")
+    console.log("Marking task complete:", id)
     const todo = await getTodoById(id);
 
     if (!todo) {
         throw new Error(`Todo with id ${id} not found`);
     }
+
     
-    return await updateTodo(id, { completed: !todo.completed });
+    const willBeCompleted = !todo.completed;
+    const updates = {
+        completed: willBeCompleted
+    }
+
+    if (willBeCompleted) {
+        updates.completedAt = new Date().toISOString();
+    } else {
+        updates.completedAt = null
+    }
+
+    const todos = await getAllTodos();
+    const index = todos.findIndex(t => t.id === id);
+
+    if (index === -1) {
+        throw new Error(`Todo with id ${id} not found`);
+    }
+
+    todos[index] = {
+        ...todos[index],
+        ...updates
+    };
+
+    sortTodos(todos);
+    
+    await chrome.storage.local.set({ [STORAGE_KEYS.TODOS]: todos});
+    return todos.find(t => t.id === id);
+    // return await updateTodo(id, { completed: !todo.completed });
+}
+
+async function clearCompletedTodos() {
+    console.log("Clearing completed tasks");
+    const todos = await getAllTodos();
+    const activeTodos = todos.filter(todo => !todo.completed);
+    await chrome.storage.local.set({[STORAGE_KEYS.TODOS]: activeTodos});
+    return { success: true, deletedCount: todos.length - activeTodos.length };
 }
 
 

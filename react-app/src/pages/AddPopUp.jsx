@@ -3,11 +3,16 @@ import { useState } from "react";
 
 function AddPopup({ onClose, onAddTask }) {
     const [taskText, setTaskText] = useState("");
+    const [dueDate, setDueDate] = useState("");
 
     const handleAdd = () => {
         if (taskText.trim() === "") return;
-        onAddTask(taskText);
+
+        const dueDateISO = dueDate ? new Date(dueDate).toISOString() :  null;
+
+        onAddTask(taskText, '', dueDateISO);
         setTaskText("");
+        setDueDate(""); // Reset due date
         onClose();
     };
 
@@ -21,6 +26,13 @@ function AddPopup({ onClose, onAddTask }) {
                 onChange={(e) => setTaskText(e.target.value)}
                 placeholder="Add task..."
                 className="popup-input"
+            />
+
+            <input
+                type="date"
+                value={dueDate}
+                onChange={(e) => setDueDate(e.target.value)}
+                className="popup-date-input"
             />
 
             <button

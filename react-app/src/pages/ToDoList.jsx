@@ -3,6 +3,7 @@ import igloo from '../assets/Igloo.png';
 import PopupPage from './AddPopUp.jsx';
 import { useEffect, useState } from "react";
 import { useNavigate } from "react-router-dom";
+import { getAllTodos, createTodo, toggleTodoComplete, clearCompletedTodos } from '../api/todoApi.js';
 
 function TodoList() {
     const navigate = useNavigate();
@@ -41,7 +42,21 @@ function TodoList() {
     const [isRunning, setIsRunning] = useState(false);
     const [tasks, setTasks] = useState([]);
 
-  useEffect(() => {
+    const loadTasks = async () => {
+        try {
+            const todos = await getAllTodos();
+            setTasks(todos);
+            console.log("Loaded tasks:", todos)
+        } catch (error) {
+            console.error('Failed to lload tasks:', error);
+        }
+    };
+
+    useEffect(() => {
+        loadTasks();
+    }, []);
+
+    useEffect(() => {
         let interval;
 
         if (isRunning) {
@@ -81,18 +96,39 @@ function TodoList() {
         return `${h}:${m}:${s}`;
     };
 
-    const addTask = (taskText) => {
-        const newTask = { id: Date.now(), text: taskText, completed:false};
-        setTasks([...tasks, newTask]);
+    const addTask = async(taskText) => {
+
+        try {
+            const newTask = await createTodo(taskText);
+            console.log("Created task:", newTask);
+
+            setTasks(prevTasks => [...prevTasks, newTask]);
+        } catch (error) {
+            console.error('Failed to add task:', error);
+        }
+        // const newTask = { id: Date.now(), text: taskText, completed:false};
+        // setTasks([...tasks, newTask]);
     };
 
-    const toggleTask = (id) => {
-        setTasks((prev) =>
-            prev.map((task) =>
-                task.id === id ? { ...task, completed: !task.completed } : task
-            )
-        );
+    const toggleTask = async (id) => {
+        
+        try {
+            await toggleTodoComplete(id);
+            await loadTasks();
+        } catch(error) {
+            console.error('Failed to toggle task:', error);
+        }
     };
+
+    const handleClearCompleted = async () => {
+        try {
+            const result = await clearCompletedTodos();
+            console.log(`Cleared ${result.deletedCount} completed tasks`);
+            const todos = await loadTasks();
+        } catch(error) {
+            console.error('Failed to clear completed tasks', error);
+        }
+    }
 
     return (
         <div className="todo-container">
@@ -126,7 +162,7 @@ function TodoList() {
                             onChange={() =>toggleTask(task.id)}
                             className="todo-checkbox"
                         />
-                        {task.text}
+                        {task.title}
                     </li>
                 ))}
             </ul>
@@ -146,6 +182,10 @@ function TodoList() {
             
             <button className="btn-add" onClick={() => setShowAddPopup(true)}>
                 ADD
+            </button>
+
+            <button className="btn-clear-completed" onClick={handleClearCompleted}>
+                CLEAR
             </button>
 
             {showAddPopup && (
