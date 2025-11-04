@@ -1,3 +1,4 @@
+/* global chrome */
 import '../styles/ToDoList.css'; 
 import igloo from '../assets/Igloo.png';
 import PopupPage from './AddPopUp.jsx';
@@ -29,45 +30,28 @@ function TodoList() {
     ];
 
     const [showAddPopup, setShowAddPopup] = useState(false);
-    const [seconds, setSeconds] = useState(()=> {
-        const saved = localStorage.getItem("timeLeft");
-        if(saved) {
-            return parseInt(saved, 10);
-        } else {
-            return 0;
-        }
-    });
-
-    const [isRunning, setIsRunning] = useState(false);
+    const [seconds, setSeconds] = useState(0); 
     const [tasks, setTasks] = useState([]);
 
-  useEffect(() => {
-        let interval;
+    // to load the timer
+    useEffect(() => {
+        chrome.storage.local.get(["currentTimer"], (result) => {
+            setSeconds(result.currentTimer || 0);
+        });
 
-        if (isRunning) {
-            interval = setInterval(() => {
-                setSeconds(prevSeconds => {
-                    let newTime = prevSeconds - 1;
-
-                    if (newTime <= 0) {
-                        clearInterval(interval);
-                        newTime = 0;
-                        setIsRunning(false);
-                        alert("Time’s up!");
-                    }
-
-                    localStorage.setItem("timeLeft", newTime);
-                    return newTime;
-                });
-            }, 1000);
-        }
-
-        return () => {
-            if (interval) {
-               clearInterval(interval); 
+        // listen for storage changes and sync timer
+        const handleStorageChange = (changes, area) => {
+            if (area === "local" && changes.currentTimer) {
+                setSeconds(changes.currentTimer.newValue);
             }
         };
-    }, [isRunning]);
+
+        chrome.storage.onChanged.addListener(handleStorageChange);
+
+        return () => {
+            chrome.storage.onChanged.removeListener(handleStorageChange);
+        };
+    }, []);
 
     const formatTime = (secs) => {
         let h = Math.floor(secs / 3600);
