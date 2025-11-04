@@ -1,6 +1,7 @@
-import '../styles/ToDoList.css'; 
+import '../styles/ToDoList.css';
 import igloo from '../assets/Igloo.png';
 import PopupPage from './AddPopUp.jsx';
+import Penguin from './PenguinMessage.jsx';
 import { useEffect, useState } from "react";
 import { useNavigate } from "react-router-dom";
 
@@ -23,16 +24,16 @@ function TodoList() {
     ];
 
     const lines = [
-        { top: 10}, 
-        { top: 17},
-        { top: 24}
+        { top: 10 }, 
+        { top: 17 },
+        { top: 24 }
     ];
 
     // Get time put into timer page and display it on To Do List page
     const [showAddPopup, setShowAddPopup] = useState(false);
-    const [seconds, setSeconds] = useState(()=> {
+    const [seconds, setSeconds] = useState(() => {
         const saved = localStorage.getItem("timeLeft");
-        if(saved) {
+        if (saved) {
             return parseInt(saved, 10);
         } else {
             return 0;
@@ -67,7 +68,7 @@ function TodoList() {
         // Clear timer 
         return () => {
             if (interval) {
-               clearInterval(interval); 
+                clearInterval(interval);
             }
         };
     }, [isRunning]);
@@ -87,7 +88,7 @@ function TodoList() {
 
     // Add Task to todo list
     const addTask = (taskText) => {
-        const newTask = { id: Date.now(), text: taskText, completed:false};
+        const newTask = { id: Date.now(), text: taskText, completed: false };
         setTasks([...tasks, newTask]);
     };
 
@@ -101,7 +102,6 @@ function TodoList() {
     };
 
     return (
-        // Background, igloo, and extra details being displayed on page 
         <div className="todo-container">
             <div className="todo-header-bar" />
             <img src={igloo} alt="Igloo" className="todo-igloo" />
@@ -115,49 +115,51 @@ function TodoList() {
                 <div key={i} className="line" style={{ top: l.top, left: 738 }} />
             ))}
 
-            {/* ToDo title and display for tasks */}
             <div className="todo-title-bg" />
             <div className="todo-title">TO-DO</div>
 
             <div className="todo-card" />
             <div className="todo-card-inner" />
 
-            {/* Display tasks in todo list with check boxes to show if tasks are completed or not */}
             <ul className="todo-list">
                 {tasks.map((task) => (
                     <li
                         key={task.id}
-                        className={task.completed ? "completed-task" : ""}
+                        className={`todo-item ${task.completed ? "completed-task" : ""}`}
                     >
-                        {/* Check boxes when completed */}
-                        <input 
+                        <input
                             type="checkbox"
                             checked={task.completed}
-                            onChange={() =>toggleTask(task.id)}
+                            onChange={() => toggleTask(task.id)}
                             className="todo-checkbox"
                         />
-                        {task.text}
+                        <span>{task.text}</span>
+
+                        {task.completed && (
+                            <button
+                                className="delete-btn"
+                                onClick={() => setTasks(tasks.filter((t) => t.id !== task.id))}
+                            >
+                                ✖
+                            </button>
+                        )}
                     </li>
                 ))}
             </ul>
 
-            {/* Button to go back to home page */}
             <button className="btn-back" onClick={handleHomeClick}>
                 <span>&lt;</span>
                 <span>BACK</span>
             </button>
 
-            {/* Displays timer */}
             <div className="timer-card">
                 <p className="timer-display">{formatTime(seconds)}</p>
             </div>
 
-            {/* Button to go to timer page */}
             <button className="btn-timer" onClick={handleTimerClick}>
                 TIMER
             </button>
             
-            {/* Button to show popup to add new tasks */}
             <button className="btn-add" onClick={() => setShowAddPopup(true)}>
                 ADD
             </button>
@@ -168,9 +170,13 @@ function TodoList() {
                     onAddTask={addTask}
                 />
             )}
+
+            {/* Show Penguin */}
+            <div>
+                <Penguin />
+            </div>
         </div>
     );
 }
 
 export default TodoList;
-
