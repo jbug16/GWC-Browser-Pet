@@ -1,13 +1,31 @@
-import Pet from '../assets/placeholder-pet.png';
-import React, {useState, useRef, useEffect} from 'react';
+import React, { useState, useRef, useEffect, useMemo } from 'react';
 
-function DraggablePet({starting_x = 100, starting_y = 100}) {
+// Pet sprites
+import Happy from '../assets/happysprite.png';
+import Mad from '../assets/happysprite.png';
+import Sleepy from '../assets/sleepingsprite.png';
+import Dragged from '../assets/dragsprite.png';
+
+function DraggablePet({starting_x = 100, starting_y = 100, emotion = "happy"}) {
     // track position
     const [pos, setPos] = useState({ x: starting_x, y: starting_y });
     // are we currently dragging?
     const [dragging, setDragging] = useState(false);
     // mouse offset so it doesn't "jump"
     const offsetRef = useRef({ x: 0, y: 0 });
+
+    // get each sprite
+    const SPRITES = useMemo(
+        () => ({
+            happy: Happy,
+            mad: Mad,
+            sleepy: Sleepy
+        }),
+        []
+    );
+
+    // choose sprite (force the drag sprite if dragging, else set based on emotion)
+    const petSprite = dragging ? Dragged : (SPRITES[emotion] ?? SPRITES.happy);
 
     // runs when we left-click
     const handleMouseDown = (e) => {
@@ -71,10 +89,10 @@ function DraggablePet({starting_x = 100, starting_y = 100}) {
                 zIndex: 999999999, // sit on top of ALL page content
             }}
         >
-            {/* this sets the actual image and alt text in case the image can not load for whatever reason */}
+            {/* this sets the actual image and alt text in case the image cannot load for whatever reason */}
             <img
-                src={Pet}
-                alt="Pet"
+                src={petSprite}
+                alt={`${emotion} pet${dragging ? " (dragging)" : ""}`}
                 style={{
                     width: '100%',
                     height: '100%',
