@@ -31,6 +31,12 @@
   filter: drop-shadow(2px 3px 3px rgba(0, 0, 0, 0.3));
 }
 
+.regular-bubble {
+  width: 275px; 
+  height: 170px;
+  transform: translateX(-50%) scale(1.1);
+}
+
 .speech-bubble-img {
   position: absolute;
   width: 100%;
@@ -40,15 +46,23 @@
 
 .speech-text {
   position: relative;
-  top: 11px;
   font-size: 13px;
   font-weight: 600;
-  color: #0d1b2a;
   text-align: center;
-  padding: 10px 23px;
   z-index: 5;
   line-height: 1.4;
+  color: #0d1b2a;
   font-family: "Poppins", sans-serif;
+}
+
+.regular-text {
+  top: 30px;      
+  padding: 15px 25px;
+}
+
+.mad-text {
+  top: 13px;      
+  padding: 10px 20px;
 }
 
 
