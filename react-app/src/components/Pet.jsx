@@ -6,7 +6,12 @@ import Mad from '../assets/happysprite.png';
 import Sleepy from '../assets/sleepingsprite.png';
 import Dragged from '../assets/dragsprite.png';
 
-function DraggablePet({starting_x = 100, starting_y = 100, emotion = "happy"}) {
+function DraggablePet({
+  starting_x = 100,
+  starting_y = 100,
+  emotion = "happy",
+  draggableEnabled = true
+}) {
     // track position
     const [pos, setPos] = useState({ x: starting_x, y: starting_y });
     // are we currently dragging?
@@ -29,6 +34,10 @@ function DraggablePet({starting_x = 100, starting_y = 100, emotion = "happy"}) {
 
     // runs when we left-click
     const handleMouseDown = (e) => {
+        // PETTING CODE
+
+        // DRAGGING CODE
+        if (!draggableEnabled) return; // we are not allowed to drag
         setDragging(true);
 
         // get mouse position vs element position
@@ -81,7 +90,7 @@ function DraggablePet({starting_x = 100, starting_y = 100, emotion = "happy"}) {
                 top: pos.y,
                 width: 80,
                 height: 80,
-                cursor: "grab",
+                cursor: draggableEnabled ? (dragging ? "grabbing" : "grab") : "default",
                 userSelect: "none",
                 display: "flex",
                 alignItems: "center",

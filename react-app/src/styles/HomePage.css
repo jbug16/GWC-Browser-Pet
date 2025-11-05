@@ -1,3 +1,11 @@
+.home-header-bar,
+.title-bg,
+.home-flag,
+.home-igloo,
+.home-footer-bar {
+    pointer-events: none; /* lets clicks pass through */
+}
+
 .home-container {
     background-color: #E0E1DD;
     overflow: hidden;
