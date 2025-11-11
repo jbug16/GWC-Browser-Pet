@@ -109,6 +109,11 @@ function TimerPage() {
                 <div key={i} className="line" style={{ top: l.top, left: 738 }} />
             ))}
 
+            <button className="btn-back" onClick={handleHomeClick}>
+                <span>&lt;</span>
+                <span>BACK</span>
+            </button>
+
             <div className="timer-title-bg" />
             <div id="enterTime" className="timer-title">TIMER</div>
             <h1 id="Time" className="time">{formatTime(time)}</h1>
