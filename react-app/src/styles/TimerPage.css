@@ -141,14 +141,17 @@
 }
 
 .add-time {
+   display:flex;
    position: absolute;
-   align-items: center;
+   align-items: absolute;
    padding: 100px;
    border: none;
+
 
 }
 
 .edit {
+   display: flex;
    position: absolute;
    align-items: center;
    padding: 2px;
