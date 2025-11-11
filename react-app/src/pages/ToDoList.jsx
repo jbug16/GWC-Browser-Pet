@@ -2,6 +2,7 @@
 import '../styles/ToDoList.css'; 
 import igloo from '../assets/Igloo.png';
 import PopupPage from './AddPopUp.jsx';
+import Penguin from './PenguinMessage.jsx';
 import { useEffect, useState } from "react";
 import { useNavigate } from "react-router-dom";
 
@@ -24,11 +25,12 @@ function TodoList() {
     ];
 
     const lines = [
-        { top: 10}, 
-        { top: 17},
-        { top: 24}
+        { top: 10 }, 
+        { top: 17 },
+        { top: 24 }
     ];
 
+    // Get time put into timer page and display it on To Do List page
     const [showAddPopup, setShowAddPopup] = useState(false);
     const [seconds, setSeconds] = useState(0); 
     const [tasks, setTasks] = useState([]);
@@ -53,6 +55,7 @@ function TodoList() {
         };
     }, []);
 
+    // Timer format
     const formatTime = (secs) => {
         let h = Math.floor(secs / 3600);
         let m = Math.floor((secs % 3600) / 60);
@@ -65,11 +68,13 @@ function TodoList() {
         return `${h}:${m}:${s}`;
     };
 
+    // Add Task to todo list
     const addTask = (taskText) => {
-        const newTask = { id: Date.now(), text: taskText, completed:false};
+        const newTask = { id: Date.now(), text: taskText, completed: false };
         setTasks([...tasks, newTask]);
     };
 
+    // Checks off if the task is completed or not
     const toggleTask = (id) => {
         setTasks((prev) =>
             prev.map((task) =>
@@ -102,15 +107,24 @@ function TodoList() {
                 {tasks.map((task) => (
                     <li
                         key={task.id}
-                        className={task.completed ? "completed-task" : ""}
+                        className={`todo-item ${task.completed ? "completed-task" : ""}`}
                     >
-                        <input 
+                        <input
                             type="checkbox"
                             checked={task.completed}
-                            onChange={() =>toggleTask(task.id)}
+                            onChange={() => toggleTask(task.id)}
                             className="todo-checkbox"
                         />
-                        {task.text}
+                        <span>{task.text}</span>
+
+                        {task.completed && (
+                            <button
+                                className="delete-btn"
+                                onClick={() => setTasks(tasks.filter((t) => t.id !== task.id))}
+                            >
+                                ✖
+                            </button>
+                        )}
                     </li>
                 ))}
             </ul>
@@ -138,9 +152,13 @@ function TodoList() {
                     onAddTask={addTask}
                 />
             )}
+
+            {/* Show Penguin */}
+            <div>
+                <Penguin />
+            </div>
         </div>
     );
 }
 
 export default TodoList;
-

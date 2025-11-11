@@ -16,6 +16,8 @@ function HomePage() {
     const navigate = useNavigate();
     const [enabled, setEnabled] = useState(false);
 
+    const [streak, setStreak] = useState(0);
+
     // Button functions
     const handleToDoClick = () => {
         navigate('/todo');
@@ -25,23 +27,7 @@ function HomePage() {
         navigate('/timer');
     };
 
-    // runs when the user wants to have the pet in their browser instead of the window (when they toggle that btn)
-    const sendToActiveTab = async (msg) => {
-        const [tab] = await chrome.tabs.query({ active: true, currentWindow: true });
-        if (tab?.id) chrome.tabs.sendMessage(tab.id, msg);
-    };
-
-    // handles toggle button logic
-    const handleToggle = async (e) => {
-        const next = e.target.checked;
-        setEnabled(next);
-        chrome.storage.local.set({ petEnabled: next });
-        await sendToActiveTab({ type: "SET_PET_ENABLED", enabled: next });
-
-
-    };
-
-    // Top navbar (unusable)
+    // Extra details on top 
     const dots = [
         { left: 11, color: '#FF0000' },
         { left: 39, color: '#FFE100' },
@@ -54,7 +40,7 @@ function HomePage() {
         { top: 24}
     ];
 
-    // Date
+    // Update the date presented on home page 
     const [date, setDate] = useState("");
 
     useEffect(() => {
@@ -88,6 +74,7 @@ function HomePage() {
     };
 
     return (
+        // Add Background, igloo, flag, and extra details on home page
         <div className="home-container">
             <div className="home-header-bar" />
             <img src={flag} alt="Flag" className="home-flag" />
@@ -102,46 +89,27 @@ function HomePage() {
                 <div key={i} className="line" style={{ top: l.top, left: 738 }} />
             ))}
 
+            {/* Add title and date */}
             <div className="title-bg" />
             <div className="title-text">Penguin Browser Pet!</div>
             <div className="date-text">Date: {date}</div>
 
+            {/* Buttons to go to timer */}
             <button className="btn btn-time" onClick={handleTimerClick}>
                 Timer
             </button>
 
+            {/* Buttons to go to To-Do list */}
             <button className="btn btn-todo" onClick={handleToDoClick}>
                 To-Do List
             </button>
 
-            {/* toggle button is pinned to the navbar */}
-            <Box
-                sx={{
-                    position: "absolute",
-                    top: 8,
-                    right: 56,
-                    zIndex: 99999,
-                    pointerEvents: "auto",
-                }}
-            >
-                <FormControlLabel
-                    control={<Switch checked={enabled} onChange={handleToggle} color="primary" size="small" />}
-                    label={enabled ? "In page" : "In popup"}
-                    sx={{ m: 0, ".MuiFormControlLabel-label": { fontSize: 12, ml: 0.5 } }}
-                />
-            </Box>
+            {/* Daily Streak */}
+            <div className="streak-text">
+                <span>Daily Streak:</span>
+                <span>{streak} days!</span>
+            </div>
 
-            {/* hide the pet in the extension window if we do not have it enabled */}
-            {!enabled && (
-                <Box sx={{ position: "absolute", left: 360, bottom: 40, width: 120, height: 120, zIndex: 10 }}>
-                    <Pet
-                        starting_x={390}
-                        starting_y={510}
-                        emotion="happy"
-                        draggableEnabled={false}  // remove this once dragging outside the extension works
-                    />
-                </Box>
-            )}
 
         </div>
     );
