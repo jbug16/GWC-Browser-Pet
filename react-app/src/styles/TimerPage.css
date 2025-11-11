@@ -3,6 +3,10 @@
     border-radius: 2px;
     padding: 10px;
     font-family: 'Jersey 25', sans-serif;
+    
+}
+
+.btn:hover{
     transition: background-color 0.10s;
     color: #E0E1DD;
 }
