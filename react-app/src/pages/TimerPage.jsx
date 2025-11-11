@@ -1,9 +1,22 @@
+import igloo from '../assets/Igloo.png';
 import React, { useEffect, useState } from "react";
 import { useNavigate } from "react-router-dom";
 import "../styles/TimerPage.css";
 
 function TimerPage() {
     const navigate = useNavigate();
+
+    const dots = [
+        { left: 11, color: '#FF0000' },
+        { left: 39, color: '#FFE100' },
+        { left: 67, color: '#00FF11' }
+    ];
+
+    const lines = [
+        { top: 10}, 
+        { top: 17},
+        { top: 24}
+    ];
 
     // for tracking time
     const [time, setTime] = useState(0); // time in seconds
@@ -62,22 +75,23 @@ function TimerPage() {
 
     return (
         <div className="timer-container">
-            <label id="enterTime">TIMER</label>
-            <h1 id="Time">{formatTime(time)}</h1>
-            <divider/>
-            
-            <buttongroup variant="contained" orientation="horizontal">
-            <button id="increaseMin" className="buttons" onClick={handleIncreaseMin}>+10 Minutes</button>
-            <button id="increaseSec" className="buttons" onClick={handleIncreaseSec}>+10 Seconds</button>
-            <button id="increaseHr"  className="buttons" onClick={handleIncreaseHr}>+1 Hour</button>
-            </buttongroup>
+            <div className="timer-header-bar" />
+            <img src={igloo} alt="Igloo" className="timer-igloo" />
+            <div className="timer-footer-bar" />
 
-            <divider/>
-            <button id="startTimer" className="buttons" onClick={handleStart}>Start</button>
-            <button id="pauseReset" className="buttons" onClick={handlePauseReset}>Pause/Reset</button>
-            <button id="Stop" className="buttons" onClick={handleStop}>Stop</button>
-            <divider/>
-            <button id="toDo" onClick={handleToDoClick}>ToDo</button>
+            <div className="timer-title-bg" />
+            <div id="enterTime" className="timer-title">TIMER</div>
+            <h1 id="Time">{formatTime(time)}</h1>
+            
+            <button id="increaseMin" className="btn" onClick={handleIncreaseMin}>+10 Minutes</button>
+            <button id="increaseSec" className="btn" onClick={handleIncreaseSec}>+10 Seconds</button>
+            <button id="increaseHr"  className="btn" onClick={handleIncreaseHr}>+1 Hour</button>
+        
+            <button id="startTimer" className="btn" onClick={handleStart}>Start</button>
+            <button id="pauseReset" className="btn" onClick={handlePauseReset}>Pause/Reset</button>
+            <button id="Stop" className="btn" onClick={handleStop}>Stop</button>
+            
+            <button id="toDo" className="btn" onClick={handleToDoClick}>ToDo</button>
         </div>
     );
 }
