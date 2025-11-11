@@ -81,49 +81,30 @@ document.addEventListener("DOMContentLoaded", ()=>{
     const stopBtn = document.getElementById("Stop");
     const timeDisplay = document.getElementById("Time");
 
-    let timeLeft = 0;
-    let timerInterval = null;
+    // load initial timer value
+    chrome.storage.local.get(["currentTimer"], (result) => {
+        updateDisplay(result.currentTimer || 0);
+    });
 
-    // to update timer display
-    function updateDisplay() {
-        const hrs = Math.floor(timeLeft / 3600);
-        const mins = Math.floor((timeLeft % 3600) / 60);
-        const secs = timeLeft % 60;
+    // listen for background timer updates
+    chrome.storage.onChanged.addListener((changes, area) => {
+        if (area === "local" && changes.currentTimer) {
+            updateDisplay(changes.currentTimer.newValue);
+        }
+    });
+
+    function updateDisplay(seconds) {
+        const hrs = Math.floor(seconds / 3600);
+        const mins = Math.floor((seconds % 3600) / 60);
+        const secs = seconds % 60;
         timeDisplay.textContent = `${hrs}:${mins}:${secs.toString().padStart(2, "0")}`;
     }
 
-    // to start the timer
-    function startTimer() {
-        if (timerInterval) return;
-        timerInterval = setInterval(() => {
-            if (timeLeft > 0) {
-                timeLeft--;
-                updateDisplay();
-            } else {
-                clearInterval(timerInterval);
-                timerInterval = null;
-                alert("Time's up!");
-            }
-        }, 1000);
+    function sendMessage(action) {
+        chrome.runtime.sendMessage({ action });
     }
 
-    // to pause/reset the timer
-    function pauseResetTimer() {
-        clearInterval(timerInterval);
-        timerInterval = null;
-        timeLeft = 0;
-        updateDisplay();
-    }
-
-    // to stop the timer
-    function stopTimer() {
-        clearInterval(timerInterval);
-        timerInterval = null;
-    }
-
-    if (startBtn) startBtn.addEventListener("click", startTimer);
-    if (pauseBtn) pauseBtn.addEventListener("click", pauseResetTimer);
-    if (stopBtn) stopBtn.addEventListener("click", stopTimer);
-
-    updateDisplay();
+    startBtn.addEventListener("click", () => sendMessage("START_TIMER"));
+    pauseBtn.addEventListener("click", () => sendMessage("RESET_TIMER"));
+    stopBtn.addEventListener("click", () => sendMessage("STOP_TIMER"));
 });

@@ -1,29 +1,12 @@
-import igloo from '../assets/Igloo.png';
+/* global chrome */
 import React, { useEffect, useState } from "react";
 import { useNavigate } from "react-router-dom";
 import "../styles/TimerPage.css";
 
 function TimerPage() {
     const navigate = useNavigate();
-
-    const dots = [
-        { left: 11, color: '#FF0000' },
-        { left: 39, color: '#FFE100' },
-        { left: 67, color: '#00FF11' }
-    ];
-
-    const lines = [
-        { top: 10}, 
-        { top: 17},
-        { top: 24}
-    ];
-
-    // for tracking time
-    const [time, setTime] = useState(0); // time in seconds
-    const [isRunning, setIsRunning] = useState(false);
-    const [intervalId, setIntervalId] = useState(null);
-
-    // formats time as hours, minutes, seconds
+    const [time, setTime] = useState(0);
+    
     const formatTime = (seconds) => {
         const hrs = Math.floor(seconds / 3600);
         const mins = Math.floor((seconds % 3600) / 60);
@@ -31,47 +14,41 @@ function TimerPage() {
         return `${hrs}:${mins}:${secs.toString().padStart(2, "0")}`;
     };
 
-    // for starting the timer
-    const handleStart = () => {
-        if (!isRunning) {
-            setIsRunning(true);
-            const id = setInterval(() => {
-                setTime((prev) => prev - 1);
-            }, 1000);
-            setIntervalId(id);
-        }
+    useEffect(() => {
+        // load initial timer
+        chrome.storage.local.get(["currentTimer"], (result) => {
+            setTime(result.currentTimer || 0);
+        });
+
+        // listen to timer updates
+        const handleStorageChange = (changes, area) => {
+            if (area === "local" && changes.currentTimer) {
+                setTime(changes.currentTimer.newValue);
+            }
+        };
+
+        chrome.storage.onChanged.addListener(handleStorageChange);
+
+        return () => {
+            chrome.storage.onChanged.removeListener(handleStorageChange);
+        };
+    }, []);
+
+    const sendMessage = (action) => {
+        chrome.runtime.sendMessage({ action });
     };
 
-    // for pausing/resetting the timer
-    const handlePauseReset = () => {
-        clearInterval(intervalId);
-        setIsRunning(false);
-        setTime(0);
-    };
-
-    // for stopping the timer
-    const handleStop = () => {
-        clearInterval(intervalId);
-        setIsRunning(false);
-    };
-
-    // time buttons
-    const handleIncreaseMin = () => setTime((prev) => prev + 600);
-    const handleIncreaseSec = () => setTime((prev) => prev + 10);
-    const handleIncreaseHr = () => setTime((prev) => prev + 3600);
+    const handleStart = () => sendMessage("START_TIMER");
+    const handleStop = () => sendMessage("STOP_TIMER");
+    const handlePauseReset = () => sendMessage("RESET_TIMER");
+    const handleIncreaseMin = () => sendMessage("INCREASE_MINUTE");
+    const handleIncreaseSec = () => sendMessage("INCREASE_SECOND");
+    const handleIncreaseHr = () => sendMessage("INCREASE_HOUR");
 
     // Button functions
     const handleToDoClick = () => {
         navigate('/todo');
     };
-
-    // stops timer when it reaches 0
-    useEffect(() => {
-        if (time <= 0 && isRunning) {
-            clearInterval(intervalId);
-            setIsRunning(false);
-        }
-    }, [time, isRunning, intervalId]);
 
     return (
         <div className="timer-container">
