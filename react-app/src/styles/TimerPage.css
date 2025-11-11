@@ -57,10 +57,6 @@
     background-color: #415A77;
 }
 
-button:hover {
-    background-color: #778DA9;
-    cursor:pointer;
-}
 
 .timer-title-bg {
     position: absolute;
@@ -83,9 +79,9 @@ button:hover {
     white-space: nowrap;
 }
 
-.time{
+.time {
     padding-top: 20px;
-    position: absolute;
+    position: center;
     top: 50px;
     left: 408px;
     font-family: 'Jersey 25', sans-serif;
@@ -112,4 +108,19 @@ button:hover {
     gap: 5px;
     padding: 0;
     border: none;
+}
+
+.add-time {
+   position: absolute;
+   align-items: center;
+   padding: 2px;
+   border: none;
+
+}
+
+.edit {
+   position: absolute;
+   align-items: center;
+   padding: 2px;
+   border: none;
 }

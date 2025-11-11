@@ -9,7 +9,7 @@ function TimerPage() {
     const handleHomeClick = () => {
         navigate('/');
     };
-    
+
     const navigate = useNavigate();
 
     // for tracking time
@@ -119,21 +119,18 @@ function TimerPage() {
                 <span>BACK</span>
             </button>
 
-            <div className="timer-title-bg" />
+            <div className="timer-title-bg"/>
             <div id="enterTime" className="timer-title">TIMER</div>
             <h1 id="Time" className="time">{formatTime(time)}</h1>
 
-            <div/>
+            <div className="add-time"/>
             <button id="increaseMin" className="btn" onClick={handleIncreaseMin}>+10 Minutes</button>
-            <br/>
             <button id="increaseSec" className="btn" onClick={handleIncreaseSec}>+10 Seconds</button>
-            <br/>
             <button id="increaseHr"  className="btn" onClick={handleIncreaseHr}>+1 Hour</button>
-
+            
+            <div className="edit"/>
             <button id="startTimer" className="btn" onClick={handleStart}>Start</button>
-            <br/>
             <button id="pauseReset" className="btn" onClick={handlePauseReset}>Pause/Reset</button>
-            <br/>
             <button id="Stop" className="btn" onClick={handleStop}>Stop</button>
 
             <button id="toDo" className="btn" onClick={handleToDoClick}>ToDo</button>
