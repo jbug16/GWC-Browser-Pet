@@ -1,3 +1,12 @@
+.btn {
+    background-color: #415A77;
+    border-radius: 2px;
+    padding: 10px;
+    font-family: 'Jersey 25', sans-serif;
+    transition: background-color 0.10s;
+    color: #E0E1DD;
+}
+
 .timer-container {
     background-color: #E0E1DD;
     overflow: hidden;
@@ -7,16 +16,69 @@
     position: relative;
 }
 
-button {
+.timer-header-bar {
+    position: absolute;
+    top: 0;
+    left: 0;
+    width: 791px;
+    height: 38px;
+    background-color: #D9D9D9;
+}
+
+.timer-footer-bar {
+    position: absolute;
+    top: 586px;
+    left: 0;
+    width: 791px;
+    height: 30px;
+    background-color: #778da9;
+}
+
+.timer-igloo {
+    position: absolute;
+    top: 264px;
+    left: 0;
+    width: 475px;
+    height: 344px;
+}
+
+
+.dot {
+    position: absolute;
+    width: 19px;
+    height: 19px;
+    border-radius: 9.5px;
+}
+
+.line {
+    position: absolute;
+    width: 35px;
+    height: 5px;
     background-color: #415A77;
-    border-radius: 2px;
-    padding: 10px;
-    font-family: Verdana, Geneva, Tahoma, sans-serif;
-    transition: background-color 0.10s;
-    color: #E0E1DD;
 }
 
 button:hover {
     background-color: #778DA9;
     cursor:pointer;
+}
+
+.timer-title-bg {
+    position: absolute;
+    top: 80px;
+    left: 402px;
+    width: 326px;
+    height: 74px;
+    background-color: rgba(65, 90, 119, 0.3);
+}
+
+.timer-title {
+    position: absolute;
+    top: 50px;
+    left: 408px;
+    font-family: 'Jersey 25', sans-serif;
+    color: #0D1B2A;
+    font-size: 130px;
+    text-shadow: 0px 4px 4px #778da9;
+    line-height: normal;
+    white-space: nowrap;
 }

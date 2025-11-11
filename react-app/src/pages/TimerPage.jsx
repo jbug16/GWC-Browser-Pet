@@ -1,12 +1,31 @@
 /* global chrome */
+import igloo from '../assets/Igloo.png';
 import React, { useEffect, useState } from "react";
 import { useNavigate } from "react-router-dom";
 import "../styles/TimerPage.css";
 
 function TimerPage() {
     const navigate = useNavigate();
-    const [time, setTime] = useState(0);
-    
+
+    // for tracking time
+    const [time, setTime] = useState(0); // time in seconds
+    const [isRunning, setIsRunning] = useState(false);
+    const [intervalId, setIntervalId] = useState(null);
+
+    // Navbar
+    const dots = [
+        { left: 11, color: '#FF0000' },
+        { left: 39, color: '#FFE100' },
+        { left: 67, color: '#00FF11' }
+    ];
+
+    const lines = [
+        { top: 10},
+        { top: 17},
+        { top: 24}
+    ];
+
+    // Time
     const formatTime = (seconds) => {
         const hrs = Math.floor(seconds / 3600);
         const mins = Math.floor((seconds % 3600) / 60);
@@ -34,37 +53,67 @@ function TimerPage() {
         };
     }, []);
 
-    const sendMessage = (action) => {
-        chrome.runtime.sendMessage({ action });
+    // for starting the timer
+    const handleStart = () => {
+        if (!isRunning) {
+            setIsRunning(true);
+            const id = setInterval(() => {
+                setTime((prev) => prev - 1);
+            }, 1000);
+            setIntervalId(id);
+        }
     };
 
-    const handleStart = () => sendMessage("START_TIMER");
-    const handleStop = () => sendMessage("STOP_TIMER");
-    const handlePauseReset = () => sendMessage("RESET_TIMER");
-    const handleIncreaseMin = () => sendMessage("INCREASE_MINUTE");
-    const handleIncreaseSec = () => sendMessage("INCREASE_SECOND");
-    const handleIncreaseHr = () => sendMessage("INCREASE_HOUR");
+    // for pausing/resetting the timer
+    const handlePauseReset = () => {
+        clearInterval(intervalId);
+        setIsRunning(false);
+        setTime(0);
+    };
+
+    // for stopping the timer
+    const handleStop = () => {
+        clearInterval(intervalId);
+        setIsRunning(false);
+    };
+
+    // time buttons
+    const handleIncreaseMin = () => setTime((prev) => prev + 600);
+    const handleIncreaseSec = () => setTime((prev) => prev + 10);
+    const handleIncreaseHr = () => setTime((prev) => prev + 3600);
 
     // Button functions
     const handleToDoClick = () => {
         navigate('/todo');
     };
 
+    // stops timer when it reaches 0
+    useEffect(() => {
+        if (time <= 0 && isRunning) {
+            clearInterval(intervalId);
+            setIsRunning(false);
+        }
+    }, [time, isRunning, intervalId]);
+
     return (
         <div className="timer-container">
-            <label id="enterTime">TIMER</label>
-            <br/> <br/>
+            <div className="timer-header-bar" />
+            <img src={igloo} alt="Igloo" className="timer-igloo" />
+            <div className="timer-footer-bar" />
+
+            <div className="timer-title-bg" />
+            <div id="enterTime" className="timer-title">TIMER</div>
             <h1 id="Time">{formatTime(time)}</h1>
-            <br/>
-            <button className="buttons" onClick={handleIncreaseMin}>+10 Minutes</button>
-            <button className="buttons" onClick={handleIncreaseSec}>+10 Seconds</button>
-            <button className="buttons" onClick={handleIncreaseHr}>+1 Hour</button>
-            <br/><br/>
-            <button className="buttons" onClick={handleStart}>Start</button>
-            <button className="buttons" onClick={handlePauseReset}>Pause/Reset</button>
-            <button className="buttons" onClick={handleStop}>Stop</button>
-            <br/><br/>
-            <button onClick={handleToDoClick}>ToDo</button>
+
+            <button id="increaseMin" className="btn" onClick={handleIncreaseMin}>+10 Minutes</button>
+            <button id="increaseSec" className="btn" onClick={handleIncreaseSec}>+10 Seconds</button>
+            <button id="increaseHr"  className="btn" onClick={handleIncreaseHr}>+1 Hour</button>
+
+            <button id="startTimer" className="btn" onClick={handleStart}>Start</button>
+            <button id="pauseReset" className="btn" onClick={handlePauseReset}>Pause/Reset</button>
+            <button id="Stop" className="btn" onClick={handleStop}>Stop</button>
+
+            <button id="toDo" className="btn" onClick={handleToDoClick}>ToDo</button>
         </div>
     );
 }
