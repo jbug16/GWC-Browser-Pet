@@ -113,6 +113,7 @@ function TimerPage() {
             <div id="enterTime" className="timer-title">TIMER</div>
             <h1 id="Time">{formatTime(time)}</h1>
 
+            <div/>
             <button id="increaseMin" className="btn" onClick={handleIncreaseMin}>+10 Minutes</button>
             <br/>
             <button id="increaseSec" className="btn" onClick={handleIncreaseSec}>+10 Seconds</button>
