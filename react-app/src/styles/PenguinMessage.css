@@ -1,26 +1,36 @@
 .penguin-wrapper {
   left: 500px;
-  top: 480px;
+  top: 490px;
   position: relative;
   display: inline-block;
   cursor: pointer;
   transition: transform 0.2s ease;
 }
 
-.penguin-wrapper:hover {
-  transform: scale(1.05);
+.penguin-img {
+  width: 100px;
+  height: 100px;
+  object-fit: contain;
+  user-select: none;
 }
 
-.penguin-img {
-  width: 120px;
-  height: auto;
-  user-select: none;
+/* Adjust positioning for happy sprite */
+.penguin-happy {
+  position: relative;
+  top: 0px;
+  left: 0px;
+}
+
+/* Adjust positioning for sleepy sprite */
+.penguin-sleepy {
+  position: relative;
+  top: 28px;
 }
 
 .speech-bubble {
   position: absolute;
-  bottom: 80%; 
-  left: 140%;
+  bottom: 20%;
+  left: 160%;
   transform: translateX(-50%) scale(0.9);
   opacity: 0;
   animation: bubble-pop 0.3s ease forwards;

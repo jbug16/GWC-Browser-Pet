@@ -35,21 +35,26 @@ function TodoList() {
     const [showAddPopup, setShowAddPopup] = useState(false);
     const [seconds, setSeconds] = useState(0); 
     const [tasks, setTasks] = useState([]);
+    const [isTimerRunning, setIsTimerRunning] = useState(false);
 
     // to load the timer
     useEffect(() => {
-        chrome.storage.local.get(["currentTimer"], (result) => {
+        chrome.storage.local.get(["currentTimer", "timerRunning"], (result) => {
             setSeconds(result.currentTimer || 0);
+            setIsTimerRunning(result.timerRunning || false);
         });
     }, []);
 
     const loadTasks = async () => {
         try {
             const todos = await getAllTodos();
-            setTasks(todos);
-            console.log("Loaded tasks:", todos)
+            // Ensure todos is always an array
+            const todosArray = Array.isArray(todos) ? todos : [];
+            setTasks(todosArray);
+            console.log("Loaded tasks:", todosArray)
         } catch (error) {
             console.error('Failed to load tasks:', error);
+            setTasks([]); // Set to empty array on error
         }
     };
 
@@ -64,6 +69,9 @@ function TodoList() {
         const handleStorageChange = (changes, area) => {
             if (area === "local" && changes.currentTimer) {
                 setSeconds(changes.currentTimer.newValue);
+            }
+            if (area === "local" && changes.timerRunning) {
+                setIsTimerRunning(changes.timerRunning.newValue);
             }
         };
 
@@ -94,8 +102,6 @@ function TodoList() {
         try {
             const newTask = await createTodo(taskText, dueDate);
             console.log("Created task:", newTask);
-
-            setTasks(prevTasks => [...prevTasks, newTask]);
             await loadTasks();
         } catch (error) {
             console.error('Failed to add task:', error);
@@ -115,7 +121,7 @@ function TodoList() {
         try {
             const result = await clearCompletedTodos();
             console.log(`Cleared ${result.deletedCount} completed tasks`);
-            const todos = await loadTasks();
+            await loadTasks();
         } catch(error) {
             console.error('Failed to clear completed tasks', error);
         }
@@ -194,7 +200,7 @@ function TodoList() {
 
             {/* Show Penguin */}
             <div>
-                <Penguin />
+                <Penguin isTimerRunning={isTimerRunning} />
             </div>
         </div>
     );

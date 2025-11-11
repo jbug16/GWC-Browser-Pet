@@ -1,5 +1,6 @@
 import { useState, useEffect } from "react";
-import penguinImg from "../assets/penguinSub.png";
+import penguinImgHappy from "../assets/happysprite.png";
+import penguinImgSleep from "../assets/sleepingsprite.png";
 import madSpeechBubble from "../assets/madSpeech.png";
 import regularSpeechBubble from "../assets/regularSpeech.png";
 import "../styles/PenguinMessage.css";
@@ -8,31 +9,31 @@ function PenguinMessage({ isTimerRunning }) {
   const [showSpeech, setShowSpeech] = useState(false);
   const [message, setMessage] = useState("");
   const [bubbleImg, setBubbleImg] = useState(regularSpeechBubble);
+  const [penguinImg, setPenguinImg] = useState(penguinImgHappy);
 
   const madMessages = [
     "Go back to studying!",
     "Stop procrastinating!",
     "💢",
-    "Your work isn’t gonna finish itself!"
+    "Your work isn't gonna finish itself!"
   ];
 
   const happyMessages = [
     "Time to relax a little!",
-    "Take a short break",
-    "You’re doing great!",
+    "Take a short break!",
+    "You're doing great!",
     "Keep up the good work!"
   ];
 
   const handlePenguinClick = () => {
     let chosenMessages;
     let chosenBubble;
-    //isTimerRunning = true;
 
     if (isTimerRunning) {
       // Show mad messages when timer is running 
       chosenMessages = madMessages;
       chosenBubble = madSpeechBubble;
-    } else if (!isTimerRunning) {
+    } else {
       // Show happy messages when timer is not running
       chosenMessages = happyMessages;
       chosenBubble = regularSpeechBubble;
@@ -43,28 +44,16 @@ function PenguinMessage({ isTimerRunning }) {
 
     setMessage(randomMessage);
     setBubbleImg(chosenBubble);
-    setShowSpeech(true);
+    setShowSpeech(!showSpeech);
   };
 
-  // Automatically show message based on timer
+  // Update penguin sprite based on timer state
   useEffect(() => {
-    let chosenMessages;
-    let chosenBubble;
-
     if (isTimerRunning) {
-      chosenMessages = madMessages;
-      chosenBubble = madSpeechBubble;
-    } else if (!isTimerRunning) {
-      chosenMessages = happyMessages;
-      chosenBubble = regularSpeechBubble;
+      setPenguinImg(penguinImgSleep);
+    } else {
+      setPenguinImg(penguinImgHappy);
     }
-
-    const randomIndex = Math.floor(Math.random() * chosenMessages.length);
-    const randomMessage = chosenMessages[randomIndex];
-
-    setMessage(randomMessage);
-    setBubbleImg(chosenBubble);
-    setShowSpeech(true);
   }, [isTimerRunning]);
 
   // Hides bubble after 3 seconds
@@ -94,7 +83,11 @@ function PenguinMessage({ isTimerRunning }) {
           </p>
         </div>
       )}
-      <img src={penguinImg} alt="penguin" className="penguin-img" />
+      <img 
+        src={penguinImg} 
+        alt="penguin" 
+        className={`penguin-img ${penguinImg === penguinImgHappy ? "penguin-happy" : "penguin-sleepy"}`}
+      />
     </div>
   );
 }

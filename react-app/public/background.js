@@ -12,6 +12,7 @@ function startTimer(initialTime) {
     if (!timer.running) {
         timer.running = true;
         if (initialTime !== undefined) timer.timeLeft = initialTime;
+        chrome.storage.local.set({ timerRunning: true });
 
         timer.intervalId = setInterval(() => {
             if (timer.timeLeft > 0) {
@@ -20,7 +21,7 @@ function startTimer(initialTime) {
             } else {
                 clearInterval(timer.intervalId);
                 timer.running = false;
-                chrome.storage.local.set({ currentTimer: 0 });
+                chrome.storage.local.set({ currentTimer: 0, timerRunning: false });
             }
         }, 1000);
     }
@@ -30,6 +31,7 @@ function startTimer(initialTime) {
 function stopTimer() {
     clearInterval(timer.intervalId);
     timer.running = false;
+    chrome.storage.local.set({ timerRunning: false });
 }
 
 // reset timer
@@ -45,37 +47,9 @@ function increaseTimer(seconds) {
     chrome.storage.local.set({ currentTimer: timer.timeLeft });
 }
 
-// listen for messages from pages
-chrome.runtime.onMessage.addListener((request, sender, sendResponse) => {
-    switch(request.action) {
-        case "START_TIMER":
-            startTimer(request.time);
-            break;
-        case "STOP_TIMER":
-            stopTimer();
-            break;
-        case "RESET_TIMER":
-            resetTimer();
-            break;
-        case "INCREASE_MINUTE":
-            increaseTimer(600);
-            break;
-        case "INCREASE_SECOND":
-            increaseTimer(10);
-            break;
-        case "INCREASE_HOUR":
-            increaseTimer(3600);
-            break;
-        default:
-            console.warn("Unknown action:", request.action);
-    }
-    sendResponse({ status: "ok" });
-    return true;
-});
-
 // initialize timer storage
 chrome.runtime.onInstalled.addListener(() => {
-    chrome.storage.local.set({ currentTimer: 0 });
+    chrome.storage.local.set({ currentTimer: 0, timerRunning: false });
 });
 
 const STORAGE_KEYS = {
@@ -102,6 +76,26 @@ async function handleMessage(request) {
     const { action, data } = request;
 
     switch (action) {
+        // Timer actions
+        case "START_TIMER":
+            startTimer(data?.time || request.time);
+            return { status: "ok" };
+        case "STOP_TIMER":
+            stopTimer();
+            return { status: "ok" };
+        case "RESET_TIMER":
+            resetTimer();
+            return { status: "ok" };
+        case "INCREASE_MINUTE":
+            increaseTimer(600);
+            return { status: "ok" };
+        case "INCREASE_SECOND":
+            increaseTimer(10);
+            return { status: "ok" };
+        case "INCREASE_HOUR":
+            increaseTimer(3600);
+            return { status: "ok" };
+        // Todo actions
         case 'GET_ALL_TODOS':
             return await getAllTodos();
         case 'CREATE_TODO':
