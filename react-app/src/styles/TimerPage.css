@@ -3,11 +3,11 @@
     border-radius: 2px;
     padding: 10px;
     font-family: 'Jersey 25', sans-serif;
-    
+    transition: 0.10s;
 }
 
 .btn:hover{
-    transition: background-color 0.10s;
+    background-color: #778da9;
     color: #E0E1DD;
 }
 
