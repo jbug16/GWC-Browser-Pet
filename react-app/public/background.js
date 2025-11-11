@@ -22,6 +22,15 @@ function startTimer(initialTime) {
                 clearInterval(timer.intervalId);
                 timer.running = false;
                 chrome.storage.local.set({ currentTimer: 0, timerRunning: false });
+                
+                // Show notification when timer completes
+                chrome.notifications.create({
+                    type: 'basic',
+                    iconUrl: 'images/cat_icon_128.png',
+                    title: 'Timer Complete!',
+                    message: 'Your study timer has finished. Great work!',
+                    priority: 2
+                });
             }
         }, 1000);
     }
