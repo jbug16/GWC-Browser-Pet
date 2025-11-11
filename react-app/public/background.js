@@ -28,23 +28,16 @@ async function handleMessage(request) {
     switch (action) {
         case 'GET_ALL_TODOS':
             return await getAllTodos();
-        case 'GET_TODO_BY_ID':
-            return await getTodoById(data.id);
         case 'CREATE_TODO':
-            return await createTodo(data.title, data.description, data.dueDate);
-        case 'UPDATE_TODO':
-            return await updateTodo(data.id, data.updates);
-        case 'DELETE_TODO':
-            return await deleteTodo(data.id);
+            return await createTodo(data.title, data.dueDate);
         case 'TOGGLE_TODO_COMPLETE':
             return await toggleTodoComplete(data.id);
         case 'CLEAR_COMPLETED_TODOS':
             return await clearCompletedTodos();
         default:
-            throw new Error(`Unkownn action: ${action}`);
+            throw new Error(`Unknown action: ${action}`);
     }
 }
-
 
 function sortTodos(todos) {
     console.log("Sorting tasks by due date");
@@ -75,7 +68,7 @@ async function getTodoById(id) {
     return todos.find(todo => todo.id === id);
 }
 
-async function createTodo(title, description = '', dueDate = null) {
+async function createTodo(title, dueDate = null) {
     console.log("Creating new task");
     // get existing array
     const todos = await getAllTodos();
@@ -84,7 +77,6 @@ async function createTodo(title, description = '', dueDate = null) {
     const newTodo = {
         id: Date.now().toString(),
         title,
-        description: description || '',
         completed: false,
         completedAt: null,
         dueDate: dueDate || null,
@@ -101,40 +93,6 @@ async function createTodo(title, description = '', dueDate = null) {
     return newTodo;
 }
 
-async function updateTodo(id, updates) {
-    console.log("Updating task:", id);
-    const todos = await getAllTodos();
-    const index = todos.findIndex(todo => todo.id === id);
-    
-    if (index === -1) {
-        throw new Error(`Todo with id ${id} not found`);
-    }
-    
-    // expands and updates necessary components while maintaining unchanged data
-    todos[index] = {
-        ...todos[index],
-        ...updates,
-        // updatedAt: new Date().toISOString()
-    };
-
-    // re-sort list if due date is changed
-    // if(updates.dueDate !== undefined) {
-    //     sortTodos(todos);
-    // }
-    
-    await chrome.storage.local.set({ [STORAGE_KEYS.TODOS]: todos });
-    return todos[index];
-}
-
-// task completed, delete from list
-async function deleteTodo(id) {
-    console.log("Deleting task:", id);
-    const todos = await getAllTodos();
-    const filteredTodos = todos.filter(todo => todo.id !== id);
-    await chrome.storage.local.set({ [STORAGE_KEYS.TODOS]: filteredTodos });
-    return { id, success: true };
-}
-
 async function toggleTodoComplete(id) {
     console.log("Marking task complete:", id)
     const todo = await getTodoById(id);
@@ -143,7 +101,6 @@ async function toggleTodoComplete(id) {
         throw new Error(`Todo with id ${id} not found`);
     }
 
-    
     const willBeCompleted = !todo.completed;
     const updates = {
         completed: willBeCompleted
@@ -171,7 +128,6 @@ async function toggleTodoComplete(id) {
     
     await chrome.storage.local.set({ [STORAGE_KEYS.TODOS]: todos});
     return todos.find(t => t.id === id);
-    // return await updateTodo(id, { completed: !todo.completed });
 }
 
 async function clearCompletedTodos() {

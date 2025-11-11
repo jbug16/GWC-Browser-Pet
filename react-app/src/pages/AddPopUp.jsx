@@ -8,9 +8,9 @@ function AddPopup({ onClose, onAddTask }) {
     const handleAdd = () => {
         if (taskText.trim() === "") return;
 
-        const dueDateISO = dueDate ? new Date(dueDate).toISOString() :  null;
+        const dueDateString = dueDate ? dueDate : null;
 
-        onAddTask(taskText, '', dueDateISO);
+        onAddTask(taskText, dueDate || null);
         setTaskText("");
         setDueDate(""); // Reset due date
         onClose();

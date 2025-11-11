@@ -48,7 +48,7 @@ function TodoList() {
             setTasks(todos);
             console.log("Loaded tasks:", todos)
         } catch (error) {
-            console.error('Failed to lload tasks:', error);
+            console.error('Failed to load tasks:', error);
         }
     };
 
@@ -96,22 +96,22 @@ function TodoList() {
         return `${h}:${m}:${s}`;
     };
 
-    const addTask = async(taskText) => {
-
+    const addTask = async(taskText, dueDate = null) => {
+        console.log("=== ToDoList addTask Debug");
+        console.log("Recieved taskText:", taskText);
+        console.log("Recieved dueDate:", dueDate);
         try {
-            const newTask = await createTodo(taskText);
+            const newTask = await createTodo(taskText, dueDate);
             console.log("Created task:", newTask);
 
             setTasks(prevTasks => [...prevTasks, newTask]);
+            await loadTasks();
         } catch (error) {
             console.error('Failed to add task:', error);
         }
-        // const newTask = { id: Date.now(), text: taskText, completed:false};
-        // setTasks([...tasks, newTask]);
     };
 
     const toggleTask = async (id) => {
-        
         try {
             await toggleTodoComplete(id);
             await loadTasks();
@@ -163,6 +163,12 @@ function TodoList() {
                             className="todo-checkbox"
                         />
                         {task.title}
+                            {task.dueDate && (
+                            <span className="task-due-date">
+                                {task.dueDate.slice(5).replace('-', '/')}
+                            </span>
+                        )}
+
                     </li>
                 ))}
             </ul>

@@ -23,21 +23,9 @@ export const getAllTodos = async () => {
     return await sendMessage('GET_ALL_TODOS');
 };
 
-// export const getTodoById = async (id) => {
-//     return await sendMessage('GET_TODO_BY_ID', { id });
-// };
-
-export const createTodo = async (title, description = '', dueDate = null) => {
-  return await sendMessage('CREATE_TODO', { title, description, dueDate });
+export const createTodo = async (title, dueDate) => {
+  return await sendMessage('CREATE_TODO', { title, dueDate });
 };
-
-// export const updateTodo = async (id, updates) => {
-//     return await sendMessage('UPDATE_TODO', {id, updates})
-// };
-
-// export const deleteTodo = async (id) => {
-//   return await sendMessage('DELETE_TODO', { id });
-// };
 
 export const toggleTodoComplete = async (id) => {
   return await sendMessage('TOGGLE_TODO_COMPLETE', { id });
