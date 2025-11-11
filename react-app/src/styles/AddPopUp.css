@@ -74,16 +74,3 @@
     cursor: pointer;
     outline: none;
 }
-
-.popup-date-input {
-    position: absolute;
-    top: 270px;
-    left: 445px;
-    width: 100px;
-    padding: 0px;
-    background-color: #ABB3BC;
-    border: none;
-    font-family: 'Jersey 25', sans-serif;
-    font-size: 15px;
-    color: #0D1B2A;
-}

@@ -1,11 +1,8 @@
-/* global chrome */
 import '../styles/ToDoList.css'; 
 import igloo from '../assets/Igloo.png';
 import PopupPage from './AddPopUp.jsx';
-import Penguin from './PenguinMessage.jsx';
 import { useEffect, useState } from "react";
 import { useNavigate } from "react-router-dom";
-import { getAllTodos, createTodo, toggleTodoComplete, clearCompletedTodos } from '../api/todoApi.js';
 
 function TodoList() {
     const navigate = useNavigate();
@@ -26,63 +23,52 @@ function TodoList() {
     ];
 
     const lines = [
-        { top: 10 }, 
-        { top: 17 },
-        { top: 24 }
+        { top: 10}, 
+        { top: 17},
+        { top: 24}
     ];
 
-    // Get time put into timer page and display it on To Do List page
     const [showAddPopup, setShowAddPopup] = useState(false);
-    const [seconds, setSeconds] = useState(0); 
-    const [tasks, setTasks] = useState([]);
-    const [isTimerRunning, setIsTimerRunning] = useState(false);
-
-    // to load the timer
-    useEffect(() => {
-        chrome.storage.local.get(["currentTimer", "timerRunning"], (result) => {
-            setSeconds(result.currentTimer || 0);
-            setIsTimerRunning(result.timerRunning || false);
-        });
-    }, []);
-
-    const loadTasks = async () => {
-        try {
-            const todos = await getAllTodos();
-            // Ensure todos is always an array
-            const todosArray = Array.isArray(todos) ? todos : [];
-            setTasks(todosArray);
-            console.log("Loaded tasks:", todosArray)
-        } catch (error) {
-            console.error('Failed to load tasks:', error);
-            setTasks([]); // Set to empty array on error
+    const [seconds, setSeconds] = useState(()=> {
+        const saved = localStorage.getItem("timeLeft");
+        if(saved) {
+            return parseInt(saved, 10);
+        } else {
+            return 0;
         }
-    };
+    });
 
-    useEffect(() => {
-        loadTasks();
-    }, []);
+    const [isRunning, setIsRunning] = useState(false);
+    const [tasks, setTasks] = useState([]);
 
-    useEffect(() => {
+  useEffect(() => {
         let interval;
 
-        // listen for storage changes and sync timer
-        const handleStorageChange = (changes, area) => {
-            if (area === "local" && changes.currentTimer) {
-                setSeconds(changes.currentTimer.newValue);
-            }
-            if (area === "local" && changes.timerRunning) {
-                setIsTimerRunning(changes.timerRunning.newValue);
-            }
-        };
+        if (isRunning) {
+            interval = setInterval(() => {
+                setSeconds(prevSeconds => {
+                    let newTime = prevSeconds - 1;
 
-        chrome.storage.onChanged.addListener(handleStorageChange);
+                    if (newTime <= 0) {
+                        clearInterval(interval);
+                        newTime = 0;
+                        setIsRunning(false);
+                        alert("Time’s up!");
+                    }
+
+                    localStorage.setItem("timeLeft", newTime);
+                    return newTime;
+                });
+            }, 1000);
+        }
 
         return () => {
-            chrome.storage.onChanged.removeListener(handleStorageChange);
+            if (interval) {
+               clearInterval(interval); 
+            }
         };
-    }, []);
+    }, [isRunning]);
 
-    // Timer format
     const formatTime = (secs) => {
         let h = Math.floor(secs / 3600);
         let m = Math.floor((secs % 3600) / 60);
@@ -95,37 +81,18 @@ function TodoList() {
         return `${h}:${m}:${s}`;
     };
 
-    const addTask = async(taskText, dueDate = null) => {
-        console.log("=== ToDoList addTask Debug");
-        console.log("Recieved taskText:", taskText);
-        console.log("Recieved dueDate:", dueDate);
-        try {
-            const newTask = await createTodo(taskText, dueDate);
-            console.log("Created task:", newTask);
-            await loadTasks();
-        } catch (error) {
-            console.error('Failed to add task:', error);
-        }
+    const addTask = (taskText) => {
+        const newTask = { id: Date.now(), text: taskText, completed:false};
+        setTasks([...tasks, newTask]);
     };
 
-    const toggleTask = async (id) => {
-        try {
-            await toggleTodoComplete(id);
-            await loadTasks();
-        } catch(error) {
-            console.error('Failed to toggle task:', error);
-        }
+    const toggleTask = (id) => {
+        setTasks((prev) =>
+            prev.map((task) =>
+                task.id === id ? { ...task, completed: !task.completed } : task
+            )
+        );
     };
-
-    const handleClearCompleted = async () => {
-        try {
-            const result = await clearCompletedTodos();
-            console.log(`Cleared ${result.deletedCount} completed tasks`);
-            await loadTasks();
-        } catch(error) {
-            console.error('Failed to clear completed tasks', error);
-        }
-    }
 
     return (
         <div className="todo-container">
@@ -151,21 +118,15 @@ function TodoList() {
                 {tasks.map((task) => (
                     <li
                         key={task.id}
-                        className={`todo-item ${task.completed ? "completed-task" : ""}`}
+                        className={task.completed ? "completed-task" : ""}
                     >
-                        <input
+                        <input 
                             type="checkbox"
                             checked={task.completed}
-                            onChange={() => toggleTask(task.id)}
+                            onChange={() =>toggleTask(task.id)}
                             className="todo-checkbox"
                         />
-                        {task.title}
-                            {task.dueDate && (
-                            <span className="task-due-date">
-                                {task.dueDate.slice(5).replace('-', '/')}
-                            </span>
-                        )}
-
+                        {task.text}
                     </li>
                 ))}
             </ul>
@@ -187,23 +148,15 @@ function TodoList() {
                 ADD
             </button>
 
-            <button className="btn-clear-completed" onClick={handleClearCompleted}>
-                CLEAR
-            </button>
-
             {showAddPopup && (
                 <PopupPage 
                     onClose={() => setShowAddPopup(false)} 
                     onAddTask={addTask}
                 />
             )}
-
-            {/* Show Penguin */}
-            <div>
-                <Penguin isTimerRunning={isTimerRunning} />
-            </div>
         </div>
     );
 }
 
 export default TodoList;
+

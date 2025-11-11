@@ -8,57 +8,27 @@ let timer = {
     intervalId: null,
 };
 
-function startTimer(initialTime) {
-    if (!timer.running) {
-        timer.running = true;
-        if (initialTime !== undefined) timer.timeLeft = initialTime;
-        chrome.storage.local.set({ timerRunning: true });
-
-        timer.intervalId = setInterval(() => {
-            if (timer.timeLeft > 0) {
-                timer.timeLeft--;
-                chrome.storage.local.set({ currentTimer: timer.timeLeft });
-            } else {
-                clearInterval(timer.intervalId);
-                timer.running = false;
-                chrome.storage.local.set({ currentTimer: 0, timerRunning: false });
-                
-                // Show notification when timer completes
-                chrome.notifications.create({
-                    type: 'basic',
-                    iconUrl: 'images/cat_icon_128.png',
-                    title: 'Timer Complete!',
-                    message: 'Your study timer has finished. Great work!',
-                    priority: 2
-                });
-            }
-        }, 1000);
+chrome.runtime.onMessage.addListener((message, sender, sendResponse) => {
+    if (message.action === "startTimer") {
+        if (!timer.running) {
+            timer.running = true;
+            timer.intervalId = setInterval(() => {
+                if (timer.timeLeft > 0) {
+                    timer.timeLeft--;
+                } else {
+                    clearInterval(timer.intervalId);
+                    timer.running = false;
+                }
+            }, 1000);
+        }
+    } else if (message.action === "stopTimer") {
+        clearInterval(timer.intervalId);
+        timer.running = false;
+    } else if (message.action === "resetTimer") {
+        clearInterval(timer.intervalId);
+        timer.running = false;
+        timer.timeLeft = 0;
     }
-}
-
-// stop timer
-function stopTimer() {
-    clearInterval(timer.intervalId);
-    timer.running = false;
-    chrome.storage.local.set({ timerRunning: false });
-}
-
-// reset timer
-function resetTimer() {
-    stopTimer();
-    timer.timeLeft = 0;
-    chrome.storage.local.set({ currentTimer: 0 });
-}
-
-// increase timer
-function increaseTimer(seconds) {
-    timer.timeLeft += seconds;
-    chrome.storage.local.set({ currentTimer: timer.timeLeft });
-}
-
-// initialize timer storage
-chrome.runtime.onInstalled.addListener(() => {
-    chrome.storage.local.set({ currentTimer: 0, timerRunning: false });
 });
 
 const STORAGE_KEYS = {
@@ -85,48 +55,63 @@ async function handleMessage(request) {
     const { action, data } = request;
 
     switch (action) {
-        // Timer actions
-        case "START_TIMER":
-            startTimer(data?.time || request.time);
-            return { status: "ok" };
-        case "STOP_TIMER":
-            stopTimer();
-            return { status: "ok" };
-        case "RESET_TIMER":
-            resetTimer();
-            return { status: "ok" };
-        case "INCREASE_MINUTE":
-            increaseTimer(600);
-            return { status: "ok" };
-        case "INCREASE_SECOND":
-            increaseTimer(10);
-            return { status: "ok" };
-        case "INCREASE_HOUR":
-            increaseTimer(3600);
-            return { status: "ok" };
-        // Todo actions
         case 'GET_ALL_TODOS':
             return await getAllTodos();
+        case 'GET_TODO_BY_ID':
+            return await getTodoById(data.id);
         case 'CREATE_TODO':
-            return await createTodo(data.title, data.dueDate);
+            return await createTodo(data.title, data.description, data.dueDate);
+        case 'UPDATE_TODO':
+            return await updateTodo(data.id, data.updates);
+        case 'DELETE_TODO':
+            return await deleteTodo(data.id);
         case 'TOGGLE_TODO_COMPLETE':
-            return await toggleTodoComplete(data.id);
-        case 'CLEAR_COMPLETED_TODOS':
-            return await clearCompletedTodos();
+            return await startTimer(data.id);
+        case "START_TIMER":
+            startTimer();
+            break;
+        case "STOP_TIMER":
+            stopTimer();
+            break;
+        case "RESET_TIMER":
+            resetTimer();
+            break;
+        case "INCREASE_MINUTE":
+            // adds 10 minutes
+            elapsedTime += 600;
+            sendTimeToPopup();
+            break;
+        case "INCREASE_SECOND":
+            // adds 10 seconds
+            elapsedTime += 10;
+            sendTimeToPopup();
+            break;
+        case "INCREASE_HOUR":
+            // add 1 hour
+            elapsedTime += 3600;
+            sendTimeToPopup();
+            break;
         default:
-            throw new Error(`Unknown action: ${action}`);
+            throw new Error(`Unkownn action: ${action}`);
     }
+}
+
+// Storage functions
+async function getAllTodos() {
+    console.log("getting To Do List");
+    const result = await chrome.storage.local.get([STORAGE_KEYS.TODOS]);
+    return result[STORAGE_KEYS.TODOS] || [];
+}
+
+async function getTodoById(id) {
+    console.log("finding task");
+    const todos = await getAllTodos();
+    return todos.find(todo => todo.id === id);
 }
 
 function sortTodos(todos) {
     console.log("Sorting tasks by due date");
     return todos.sort((a,b) => {
-        // Completed tasks go to the bottom
-        if (a.completed && !b.completed) return 1;
-        if (!a.completed && b.completed) return -1;
-        if (a.completed && b.completed) return 0;  // Keep completed tasks in order
-        
-        // Incomplete tasks sorted by due date
         if (!a.dueDate && !b.dueDate) return 0;
         if (!a.dueDate) return 1;
         if (!b.dueDate) return -1;
@@ -134,32 +119,18 @@ function sortTodos(todos) {
     });
 }
 
-// Storage functions
-async function getAllTodos() {
-    console.log("Getting todo list");
-    const result = await chrome.storage.local.get([STORAGE_KEYS.TODOS]);
-    return result[STORAGE_KEYS.TODOS] || [];
-}
-
-async function getTodoById(id) {
-    console.log("finding task id:", id);
-    const todos = await getAllTodos();
-    return todos.find(todo => todo.id === id);
-}
-
-async function createTodo(title, dueDate = null) {
-    console.log("Creating new task");
-    // get existing array
+async function createTodo(title, description = '') {
+    console.log("Creating task");
+    // Get existing todo array
     const todos = await getAllTodos();
 
-    // Create a new todo object
+    // Create the New todo object
     const newTodo = {
         id: Date.now().toString(),
         title,
+        description,
         completed: false,
-        completedAt: null,
-        dueDate: dueDate || null,
-        timeSpent: 0
+        dueDate: dueDate,
     };
     
     // Add newTodo to the array
@@ -172,50 +143,101 @@ async function createTodo(title, dueDate = null) {
     return newTodo;
 }
 
+async function updateTodo(id, updates) {
+    console.log("Making changes to existing tasks");
+    const todos = await getAllTodos();
+    const index = todos.findIndex(todo => todo.id === id);
+    
+    if (index === -1) {
+        throw new Error(`Todo with id ${id} not found`);
+    }
+    
+    // expands and updates necessary components while maintaining unchanged data
+    todos[index] = {
+        ...todos[index],
+        ...updates,
+        updatedAt: new Date().toISOString()
+    };
+
+    // re-sort list if due date is changed
+    if(updates.dueDate !== undefined) {
+        sortTodos(todos);
+    }
+    
+    await chrome.storage.local.set({ [STORAGE_KEYS.TODOS]: todos });
+    return todos[index];
+}
+
+// task completed, delete from list
+async function deleteTodo(id) {
+    console.log("Removing task from list");
+    const todos = await getAllTodos();
+    const filteredTodos = todos.filter(todo => todo.id !== id);
+    await chrome.storage.local.set({ [STORAGE_KEYS.TODOS]: filteredTodos });
+    return { id, success: true };
+}
+
 async function toggleTodoComplete(id) {
-    console.log("Marking task complete:", id)
+    console.log("Marking task complete")
     const todo = await getTodoById(id);
 
     if (!todo) {
         throw new Error(`Todo with id ${id} not found`);
     }
-
-    const willBeCompleted = !todo.completed;
-    const updates = {
-        completed: willBeCompleted
-    }
-
-    if (willBeCompleted) {
-        updates.completedAt = new Date().toISOString();
-    } else {
-        updates.completedAt = null
-    }
-
-    const todos = await getAllTodos();
-    const index = todos.findIndex(t => t.id === id);
-
-    if (index === -1) {
-        throw new Error(`Todo with id ${id} not found`);
-    }
-
-    todos[index] = {
-        ...todos[index],
-        ...updates
-    };
-
-    sortTodos(todos);
     
-    await chrome.storage.local.set({ [STORAGE_KEYS.TODOS]: todos});
-    return todos.find(t => t.id === id);
+    return await updateTodo(id, { completed: !todo.completed });
 }
 
-async function clearCompletedTodos() {
-    console.log("Clearing completed tasks");
-    const todos = await getAllTodos();
-    const activeTodos = todos.filter(todo => !todo.completed);
-    await chrome.storage.local.set({[STORAGE_KEYS.TODOS]: activeTodos});
-    return { success: true, deletedCount: todos.length - activeTodos.length };
+let elapsedTime = 0;
+let timerRunning = false;
+
+// to load saved time
+chrome.runtime.onStartup.addListener(() => {
+    chrome.storage.local.get(["elapsedTime"], (result) => {
+        elapsedTime = result.elapsedTime || 0;
+    });
+});
+
+// to start the timer
+function startTimer() {
+    if (!timerRunning) {
+        timerRunning = true;
+        chrome.alarms.create("tick", { periodInMinutes: 1 / 60 });
+    }
 }
+
+// to stop the timer
+function stopTimer() {
+    timerRunning = false;
+    chrome.alarms.clear("tick");
+}
+
+// to reset the timer
+function resetTimer() {
+    stopTimer();
+    elapsedTime = 0;
+    sendTimeToPopup();
+}
+
+chrome.alarms.onAlarm.addListener((alarm) => {
+    if (alarm.name === "tick" && timerRunning) {
+        if (elapsedTime > 0) {
+            elapsedTime -= 1;
+            sendTimeToPopup();
+        } else {
+            stopTimer();
+        }
+    }
+});
+
+function sendTimeToPopup() {
+    chrome.storage.local.set({ elapsedTime });
+    chrome.runtime.sendMessage({ action: "updateTime", data: elapsedTime });
+}
+
+
+
+
 
 
 
