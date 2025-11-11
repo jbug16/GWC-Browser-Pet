@@ -58,3 +58,24 @@
     height: 5px;
     background-color: #415A77;
 }
+
+.timer-title-bg {
+    position: absolute;
+    top: 80px;
+    left: 402px;
+    width: 326px;
+    height: 74px;
+    background-color: rgba(65, 90, 119, 0.3);
+}
+
+.timer-title {
+    position: absolute;
+    top: 50px;
+    left: 408px;
+    font-family: 'Jersey 25', sans-serif;
+    color: #0D1B2A;
+    font-size: 130px;
+    text-shadow: 0px 4px 4px #778da9;
+    line-height: normal;
+    white-space: nowrap;
+}
