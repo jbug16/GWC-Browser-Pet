@@ -121,20 +121,27 @@ function TimerPage() {
 
             <div className="timer-title-bg"/>
             <div id="enterTime" className="timer-title">TIMER</div>
-            <br/>
+            <br/><br/>
             <div id="Time" className="time">{formatTime(time)}</div>
 
             <div className="add-time"/>
-            <button id="increaseMin" className="btn" onClick={handleIncreaseMin}>+10 Minutes</button>
-            <button id="increaseSec" className="btn" onClick={handleIncreaseSec}>+10 Seconds</button>
-            <button id="increaseHr"  className="btn" onClick={handleIncreaseHr}>+1 Hour</button>
+            <button id="increaseMin" className="btn" onClick={handleIncreaseMin}>
+                +10 Minutes
+            </button>
+            
+            <button id="increaseSec" className="btn" onClick={handleIncreaseSec}>
+                +10 Seconds
+            </button>
+            <button id="increaseHr"  className="btn" onClick={handleIncreaseHr}>
+                +1 Hour
+            </button>
             
             <div className="edit"/>
             <button id="startTimer" className="btn" onClick={handleStart}>Start</button>
             <button id="pauseReset" className="btn" onClick={handlePauseReset}>Pause/Reset</button>
             <button id="Stop" className="btn" onClick={handleStop}>Stop</button>
 
-            <button id="toDo" className="btn" onClick={handleToDoClick}>ToDo</button>
+            <button id="toDo" className="btn" onClick={handleToDoClick}>To-Do List</button>
         </div>
     );
 }
