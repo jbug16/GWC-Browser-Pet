@@ -158,6 +158,19 @@
 }
 
 /* scrollbar styling */
+.task-due-date {
+    font-family: 'Jersey 25', sans-serif;
+    color: #0D1B2A;
+    font-size: 25px;
+    margin-left: 10px;
+    white-space: nowrap;
+}
+
+.completed-task .task-due-date {
+    text-decoration: line-through;
+    color:gray;
+}
+
 ::-webkit-scrollbar {
     width: 5px;
 }
@@ -196,7 +209,7 @@
 .btn-add {
     position: absolute;
     top: 412px;
-    left: 500px;
+    left: 420px;
     width: 129px;
     height: 41px;
     background-color: rgba(65, 90, 119, 0.3);
@@ -209,6 +222,30 @@
     padding: 0;
     border: none;
     box-shadow: 0px 4px 4px #415A77;
+}
+
+.btn-clear-completed {
+    position: absolute;
+    top: 412px;
+    left: 573px;
+    width: 129px;
+    height: 41px;
+    
+    background-color: rgba(65, 90, 119, 0.3);    
+    font-family: 'Jersey 25', sans-serif;
+    font-size: 30px;
+    color: #0D1B2A;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    padding: 10px 20px;
+    border: none;
+    box-shadow: 0px 4px 4px #415A77;    
+    cursor: pointer; 
+}
+
+.btn-clear-completed:hover {
+    background-color: #fe5c77;
 }
 
 .timer-card {
