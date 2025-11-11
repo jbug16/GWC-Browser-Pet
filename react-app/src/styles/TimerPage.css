@@ -6,6 +6,14 @@
     transition: 0.10s;
 }
 
+.timer-igloo {
+    position: absolute;
+    top: 264px;
+    left: 0;
+    width: 475px;
+    height: 344px;
+}
+
 .btn:hover{
     background-color: #778da9;
     color: #E0E1DD;
