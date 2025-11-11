@@ -101,6 +101,14 @@ function TimerPage() {
             <img src={igloo} alt="Igloo" className="timer-igloo" />
             <div className="timer-footer-bar" />
 
+            {dots.map((d, i) => (
+                <div key={i} className="dot" style={{ top: 12, left: d.left, backgroundColor: d.color }} />
+            ))}
+
+            {lines.map((l, i) => (
+                <div key={i} className="line" style={{ top: l.top, left: 738 }} />
+            ))}
+
             <div className="timer-title-bg" />
             <div id="enterTime" className="timer-title">TIMER</div>
             <h1 id="Time">{formatTime(time)}</h1>
