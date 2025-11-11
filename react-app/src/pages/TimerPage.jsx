@@ -5,6 +5,11 @@ import { useNavigate } from "react-router-dom";
 import "../styles/TimerPage.css";
 
 function TimerPage() {
+
+    const handleHomeClick = () => {
+        navigate('/');
+    };
+    
     const navigate = useNavigate();
 
     // for tracking time
