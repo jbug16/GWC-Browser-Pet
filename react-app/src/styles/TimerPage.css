@@ -4,6 +4,9 @@
     padding: 10px;
     font-family: 'Jersey 25', sans-serif;
     transition: 0.10s;
+    margin-right: 10px;
+    display:block;
+    margin-bottom:10px;
 }
 
 .btn-plus{
