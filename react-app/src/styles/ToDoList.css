@@ -117,6 +117,10 @@
     accent-color: #415A77;
 }
 
+.todo-checkbox:hover {
+    cursor: pointer;
+}
+
 .delete-btn {
     display: none;
     background: transparent;
@@ -206,6 +210,11 @@
     border: none;
 }
 
+.btn-back:hover {
+    background-color: #778da9;
+    color: #E0E1DD;
+}
+
 .btn-add {
     position: absolute;
     top: 412px;
@@ -222,6 +231,11 @@
     padding: 0;
     border: none;
     box-shadow: 0px 4px 4px #415A77;
+}
+
+.btn-add:hover {
+    background-color: #778da9;
+    color: #E0E1DD;
 }
 
 .btn-clear-completed {
@@ -246,6 +260,7 @@
 
 .btn-clear-completed:hover {
     background-color: #fe5c77;
+    color: #E0E1DD;
 }
 
 .timer-card {
@@ -288,4 +303,11 @@
     box-shadow: 0px 4px 4px #415A77;
 }
 
+.btn-timer:hover {
+    background-color: #778da9;
+    color: #E0E1DD;
+}
 
+button {
+    cursor: pointer;
+}

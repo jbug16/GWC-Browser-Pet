@@ -168,15 +168,6 @@ button:hover{
     background-color: #778da9;
 }
 
-.timer-igloo {
-    position: absolute;
-    top: 264px;
-    left: 0;
-    width: 475px;
-    height: 344px;
-}
-
-
 .dot {
     position: absolute;
     width: 19px;
@@ -190,7 +181,6 @@ button:hover{
     height: 5px;
     background-color: #415A77;
 }
-
 
 .timer-title-bg {
     position: absolute;

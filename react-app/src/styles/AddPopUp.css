@@ -3,8 +3,11 @@
     overflow: hidden;
     width: 100%;
     min-width: 791px;
-    min-height: 600px;
-    position: relative;
+    height: 600px;
+    position: fixed;
+    top: 0;
+    left: 0;
+    z-index: 1000;
 }
 
 .popup-bg {
@@ -61,6 +64,11 @@
     box-shadow: 0px 4px 4px #415A77;
 }
 
+.popup-add-btn:hover {
+    background-color: #778da9;
+    color: #E0E1DD;
+}
+
 .popup-close-btn {
     position: absolute;
     top: 195px;
@@ -86,4 +94,10 @@
     font-family: 'Jersey 25', sans-serif;
     font-size: 15px;
     color: #0D1B2A;
+}
+
+.popup-date-input:hover {
+    background-color: #778da9;
+    color: #E0E1DD;
+    cursor: pointer;
 }
