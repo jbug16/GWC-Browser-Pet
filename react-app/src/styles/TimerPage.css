@@ -64,15 +64,6 @@
     background-color: #778da9;
 }
 
-.timer-igloo {
-    position: absolute;
-    top: 264px;
-    left: 0;
-    width: 475px;
-    height: 344px;
-}
-
-
 .dot {
     position: absolute;
     width: 19px;
@@ -86,7 +77,6 @@
     height: 5px;
     background-color: #415A77;
 }
-
 
 .timer-title-bg {
     position: absolute;
@@ -111,7 +101,7 @@
 
 .time {
     padding-top: 20px;
-    position: center;
+    position: absolute;
     top: 50px;
     left: 408px;
     font-family: 'Jersey 25', sans-serif;
@@ -144,7 +134,7 @@
    display:flex;
    gap: 10px;
    position: absolute;
-   align-items: absolute;
+   align-items: center;
    padding: 100px;
    border: none;
 }
@@ -152,7 +142,7 @@
 .edit {
    display: flex;
    position: absolute;
-   align-items: absolute;
+   align-items: center;
    padding: 2px;
    border: none;
 }
