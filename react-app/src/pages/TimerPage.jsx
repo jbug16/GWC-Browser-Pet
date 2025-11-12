@@ -10,6 +10,7 @@ function TimerPage() {
         navigate('/');
     };
 
+
     const navigate = useNavigate();
 
     // for tracking time
@@ -121,34 +122,38 @@ function TimerPage() {
 
             <div className="timer-title-bg"/>
             <div id="enterTime" className="timer-title">TIMER</div>
+            <br/>
             <div id="Time" className="time">{formatTime(time)}</div>
 
-            <div className="add-time">
-            <button id="increaseMin" className="btn-plus" onClick={handleIncreaseMin}>
-                +10 Minutes
+            
+            <button id="increaseMin" className="btn-plus-center" onClick={handleIncreaseMin}>
+                +10 MINUTES
+            </button>
+            <br/>
+            <button id="increaseSec" className="btn-plus-right" onClick={handleIncreaseSec}>
+                +10 SECONDS
+            </button>
+            <br/>
+            <button id="increaseHr"  className="btn-plus-left" onClick={handleIncreaseHr}>
+                +1 HOUR
             </button>
             
-            <button id="increaseSec" className="btn-plus" onClick={handleIncreaseSec}>
-                +10 Seconds
-            </button>
-            <button id="increaseHr"  className="btn-plus" onClick={handleIncreaseHr}>
-                +1 Hour
-            </button>
-            </div>
-
-            <div className="edit">
-            <button id="startTimer" className="btn" onClick={handleStart}>
+            
+            <button id="startTimer" className="start-btn" onClick={handleStart}>
                 START
             </button>
-            <button id="pauseReset" className="btn" onClick={handlePauseReset}>
-                PAUSE/RESET
+            <br/>
+            <button id="pauseReset" className="pause-btn" onClick={handlePauseReset}>
+                RESET
             </button>
-            <button id="Stop" className="btn" onClick={handleStop}>
-                STOP
+            <br/>
+            <button id="Stop" className="stop-btn" onClick={handleStop}>
+                PAUSE
             </button>
-            </div>
-
-            
+            <br/>
+            <button id="toDo" className="todo-btn" onClick={handleToDoClick}>
+                TO-DO LIST
+            </button>
             
         </div>
     );

@@ -1,21 +1,11 @@
-.btn {
-    background-color: #415A77;
-    border-radius: 2px;
-    padding: 10px;
-    font-family: 'Jersey 25', sans-serif;
-    transition: 0.10s;
-    margin-right: 10px;
-    display:block;
-    margin-bottom:10px;
-}
 
-.btn-plus{
+.todo-btn {
     position: absolute;
-    top: 412px;
-    left: 420px;
-    width: 129px;
-    height: 41px;
-    background-color: rgba(65, 90, 119, 0.3);
+    top: 100px;
+    left: 11px;
+    width: 164px;
+    height: 33px;
+    background-color: rgb(65, 90, 119);
     font-family: 'Jersey 25', sans-serif;
     font-size: 30px;
     color: #0D1B2A;
@@ -27,6 +17,114 @@
     box-shadow: 0px 4px 4px #415A77;
 }
 
+.start-btn {
+    position: absolute;
+    top: 480px;
+    left: 125px;
+    width: 164px;
+    height: 43px;
+    background-color: rgb(65, 90, 119);
+    font-family: 'Jersey 25', sans-serif;
+    font-size: 30px;
+    color: #0D1B2A;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    padding: 0;
+    border: none;
+    box-shadow: 0px 4px 4px #415A77;
+}
+
+.pause-btn {
+    position: absolute;
+    top: 480px;
+    left: 330px;
+    width: 164px;
+    height: 43px;
+    background-color: rgb(65, 90, 119);
+    font-family: 'Jersey 25', sans-serif;
+    font-size: 30px;
+    color: #0D1B2A;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    padding: 0;
+    border: none;
+    box-shadow: 0px 4px 4px #415A77;
+}
+
+.stop-btn {
+    position: absolute;
+    top: 480px;
+    left: 530px;
+    width: 164px;
+    height: 43px;
+    background-color: rgb(65, 90, 119);
+    font-family: 'Jersey 25', sans-serif;
+    font-size: 30px;
+    color: #0D1B2A;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    padding: 0;
+    border: none;
+    box-shadow: 0px 4px 4px #415A77;
+}
+
+.btn-plus-right{
+    position: absolute;
+    top: 350px;
+    left: 550px;
+    width: 129px;
+    height: 41px;
+    background-color: rgba(65, 90, 119, 0.3);
+    font-family: 'Jersey 25', sans-serif;
+    font-size: 21px;
+    color: #0D1B2A;
+    align-items: center;
+    padding: 10px;
+    border: none;
+    box-shadow: 0px 4px 4px #415A77;
+    float:right;
+
+}
+
+.btn-plus-left{
+    position: absolute;
+    top: 350px;
+    left: 150px;
+    width: 129px;
+    height: 41px;
+    background-color: rgba(65, 90, 119, 0.3);
+    font-family: 'Jersey 25', sans-serif;
+    font-size: 21px;
+    color: #0D1B2A;
+    align-items: center;
+    padding: 10px;
+    border: none;
+    box-shadow: 0px 4px 4px #415A77;
+    float:left;
+
+}
+
+.btn-plus-center{
+    position: absolute;
+    top: 350px;
+    left: 350px;
+    width: 129px;
+    height: 41px;
+    background-color: rgba(65, 90, 119, 0.3);
+    font-family: 'Jersey 25', sans-serif;
+    font-size: 21px;
+    color: #0D1B2A;
+    align-items: center;
+    padding: 10px;
+    border: none;
+    box-shadow: 0px 4px 4px #415A77;
+    float: center;
+
+}
+
 .timer-igloo {
     position: absolute;
     top: 264px;
@@ -35,10 +133,13 @@
     height: 344px;
 }
 
-.btn:hover{
+button:hover{
+    transition: 0.10s;
     background-color: #778da9;
     color: #E0E1DD;
 }
+
+
 
 .timer-container {
     background-color: #E0E1DD;
@@ -94,7 +195,7 @@
 .timer-title-bg {
     position: absolute;
     top: 80px;
-    left: 402px;
+    left: 250px;
     width: 326px;
     height: 74px;
     background-color: rgba(65, 90, 119, 0.3);
@@ -103,7 +204,7 @@
 .timer-title {
     position: absolute;
     top: 50px;
-    left: 408px;
+    left: 260px;
     font-family: 'Jersey 25', sans-serif;
     color: #0D1B2A;
     font-size: 130px;
@@ -113,16 +214,18 @@
 }
 
 .time {
-    padding-top: 20px;
-    position: center;
-    top: 50px;
-    left: 408px;
+    padding-right: 20px;
+    position: absolute;
+    top: 190px;
+    left: 245px;
+    right: 398px;
     font-family: 'Jersey 25', sans-serif;
     color: #0D1B2A;
-    font-size: 100px;
+    font-size: 135px;
     text-shadow: 0px 4px 4px #778da9;
     line-height: normal;
     white-space: nowrap;
+    display: block;
 }
 
 .btn-back {
@@ -143,20 +246,3 @@
     border: none;
 }
 
-.add-time {
-   display:flex;
-   gap: 10px;
-   position: absolute;
-   align-items: absolute;
-   padding: 20px;
-   border: none;
-}
-
-.edit {
-   display: flex;
-   gap: 10px;
-   position: absolute;
-   align-items: absolute;
-   padding: 20px;
-   border: none;
-}
