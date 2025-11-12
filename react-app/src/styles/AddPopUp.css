@@ -3,8 +3,11 @@
     overflow: hidden;
     width: 100%;
     min-width: 791px;
-    min-height: 600px;
-    position: relative;
+    height: 600px;
+    position: fixed;
+    top: 0;
+    left: 0;
+    z-index: 1000;
 }
 
 .popup-bg {
