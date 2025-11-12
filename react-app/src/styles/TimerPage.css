@@ -145,14 +145,15 @@
    gap: 10px;
    position: absolute;
    align-items: absolute;
-   padding: 100px;
+   padding: 20px;
    border: none;
 }
 
 .edit {
    display: flex;
+   gap: 10px;
    position: absolute;
    align-items: absolute;
-   padding: 2px;
+   padding: 20px;
    border: none;
 }
