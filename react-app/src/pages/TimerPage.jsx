@@ -121,7 +121,6 @@ function TimerPage() {
 
             <div className="timer-title-bg"/>
             <div id="enterTime" className="timer-title">TIMER</div>
-            <br/><br/>
             <div id="Time" className="time">{formatTime(time)}</div>
 
             <div className="add-time">
@@ -139,17 +138,18 @@ function TimerPage() {
 
             <div className="edit">
             <button id="startTimer" className="btn" onClick={handleStart}>
-                Start
+                START
             </button>
             <button id="pauseReset" className="btn" onClick={handlePauseReset}>
-                Pause/Reset
+                PAUSE/RESET
             </button>
             <button id="Stop" className="btn" onClick={handleStop}>
-                Stop
+                STOP
             </button>
-
-            <button id="toDo" className="btn" onClick={handleToDoClick}>To-Do List</button>
             </div>
+
+            
+            
         </div>
     );
 }
