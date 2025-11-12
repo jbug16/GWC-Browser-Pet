@@ -16,7 +16,6 @@ function TimerPage() {
     // for tracking time
     const [time, setTime] = useState(0); // time in seconds
     const [isRunning, setIsRunning] = useState(false);
-    const [intervalId, setIntervalId] = useState(null);
 
     // Navbar
     const dots = [
@@ -40,15 +39,21 @@ function TimerPage() {
     };
 
     useEffect(() => {
-        // load initial timer
-        chrome.storage.local.get(["currentTimer"], (result) => {
+        // load initial timer and running state
+        chrome.storage.local.get(["currentTimer", "timerRunning"], (result) => {
             setTime(result.currentTimer || 0);
+            setIsRunning(result.timerRunning || false);
         });
 
         // listen to timer updates
         const handleStorageChange = (changes, area) => {
-            if (area === "local" && changes.currentTimer) {
-                setTime(changes.currentTimer.newValue);
+            if (area === "local") {
+                if (changes.currentTimer) {
+                    setTime(changes.currentTimer.newValue);
+                }
+                if (changes.timerRunning) {
+                    setIsRunning(changes.timerRunning.newValue);
+                }
             }
         };
 
@@ -62,44 +67,35 @@ function TimerPage() {
     // for starting the timer
     const handleStart = () => {
         if (!isRunning) {
-            setIsRunning(true);
-            const id = setInterval(() => {
-                setTime((prev) => prev - 1);
-            }, 1000);
-            setIntervalId(id);
+            chrome.runtime.sendMessage({ action: "START_TIMER", time: time });
         }
     };
 
     // for pausing/resetting the timer
     const handlePauseReset = () => {
-        clearInterval(intervalId);
-        setIsRunning(false);
-        setTime(0);
+        chrome.runtime.sendMessage({ action: "RESET_TIMER" });
     };
 
     // for stopping the timer
     const handleStop = () => {
-        clearInterval(intervalId);
-        setIsRunning(false);
+        chrome.runtime.sendMessage({ action: "STOP_TIMER" });
     };
 
     // time buttons
-    const handleIncreaseMin = () => setTime((prev) => prev + 600);
-    const handleIncreaseSec = () => setTime((prev) => prev + 10);
-    const handleIncreaseHr = () => setTime((prev) => prev + 3600);
+    const handleIncreaseMin = () => {
+        chrome.runtime.sendMessage({ action: "INCREASE_MINUTE" });
+    };
+    const handleIncreaseSec = () => {
+        chrome.runtime.sendMessage({ action: "INCREASE_SECOND" });
+    };
+    const handleIncreaseHr = () => {
+        chrome.runtime.sendMessage({ action: "INCREASE_HOUR" });
+    };
 
     // Button functions
     const handleToDoClick = () => {
         navigate('/todo');
     };
-
-    // stops timer when it reaches 0
-    useEffect(() => {
-        if (time <= 0 && isRunning) {
-            clearInterval(intervalId);
-            setIsRunning(false);
-        }
-    }, [time, isRunning, intervalId]);
 
     return (
         <div className="timer-container">
