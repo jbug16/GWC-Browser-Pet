@@ -32,8 +32,13 @@ function AddPopup({ onClose, onAddTask }) {
                 type="date"
                 value={dueDate}
                 onChange={(e) => setDueDate(e.target.value)}
-                className="popup-date-input"
+                className="date-button"
             />
+            <span 
+                className={`date-due ${dueDate ? "" : "placeholder"}`}
+            >
+                {dueDate ? dueDate.slice(5).replace("-", "/") : "mm/dd"}
+            </span>
 
             <button
                 onClick={handleAdd}
