@@ -37,7 +37,15 @@ function AddPopup({ onClose, onAddTask }) {
                 value={dueDate}
                 onChange={(e) => setDueDate(e.target.value)}
                 className="popup-date-input"
+                // className='date-button'
             />
+            
+            {/* Display date selected in calendar */}
+            <span 
+                className={`popup-due-date ${dueDate ? "" : "placeholder"}`}
+            >
+                {dueDate ? dueDate.slice(5).replace("-", "/") : "mm/dd"}
+            </span>
 
             {/* Popup to add task shows */}
             <button
